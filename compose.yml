@@ -1,0 +1,43 @@
+services:
+  web:
+    build: web
+    ports:
+      - "${NEXT_PUBLIC_WEB_PORT}:${NEXT_PUBLIC_WEB_PORT}"
+    environment:
+      - PORT=${NEXT_PUBLIC_WEB_PORT}
+    env_file:
+      - ./.env
+      - ./config/web.env
+    # Docker compose's watcher so application automatically updates
+    develop:
+      watch:
+        - action: sync
+          path: ./web/src
+          target: /app/src
+        - action: sync
+          path: ./web/public
+          target: /app/public
+        
+        # rebuild when packages changes/dockerfile updated
+        - action: rebuild
+          path: ./web/package.json
+        - action: rebuild
+          path: ./web/Dockerfile
+  api:
+    build: backend
+    ports:
+      - "${NEXT_PUBLIC_API_PORT}:${NEXT_PUBLIC_API_PORT}"
+    environment:
+      - PORT=${NEXT_PUBLIC_API_PORT}
+    env_file:
+      - ./.env
+      - ./config/backend.env
+    # Docker compose's watcher so application automatically updates
+    develop:
+      watch:
+        # rebuild when code changes/dockerfile updated
+        - action: rebuild
+          path: ./backend
+        - action: rebuild
+          path: ./backend/Dockerfile
+
