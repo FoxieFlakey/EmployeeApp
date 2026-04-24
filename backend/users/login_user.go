@@ -20,7 +20,7 @@ var ServerError = errors.New("ServerError")
 func Login(info LoginInfo) (*string, error) {
 	user, err := FindUser(info.Username)
 	if err != nil {
-		return nil, ServerError
+		return nil, err
 	}
 	
 	if user == nil {

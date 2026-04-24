@@ -32,6 +32,12 @@ import (
 // }
 //
 func CreateUser(c *gin.Context) {
+	if !checkRole(c, users.RoleHRD) && !checkRole(c, users.RoleAdmin) {
+		// only Admin and HRD can create users
+		c.JSON(http.StatusUnauthorized, makeError("only Admin or HRD, allowed to make new users"))
+		return
+	}
+	
 	var body users.CreateInfo
 	
 	err := c.ShouldBindJSON(&body)
