@@ -5,7 +5,10 @@ import { useState } from "react";
 
 import styles from "./page.module.css"
 import { setSessionToken } from "../session";
-import { API_URL } from "../config";
+import Backend from "../backend/lib";
+import { LoginResult } from "../backend/login";
+import { unwrap, unwrap_err as unwrapErr } from "../backend/result";
+import { ErrorCode } from "../backend/error";
 
 export default function LoginScreen() {
   const [ errorMessage, setErrorMessage ] = useState<string | null>(null)
@@ -20,35 +23,28 @@ export default function LoginScreen() {
       const username = data.get("username")!.toString()
       const password = data.get("password")!.toString()
       
-      const result = await fetch(API_URL + "/login", {
-        body: JSON.stringify({
-          username: username,
-          password: password
-        }),
-        method: "POST"
-      })
-      
+      const result = await Backend.login(username, password)
       if (!result.ok) {
         setLoggingIn(false)
-        if (result.status == 401) {
-          // Wrong password
+        
+        const error = unwrapErr(result)
+        
+        switch (error.code) {
+        case ErrorCode.WrongPassword:
           setErrorMessage("Incorrect password, try again")
-        } else {
-          setErrorMessage("Cannot login, please try again later")
+          break
+        case ErrorCode.UnknownUser:
+          setErrorMessage("Cannot find that user, make sure the username typed correctly")
+          break
+        default:
+          setErrorMessage(`Cannot login, please try again later. Error: ${error.message}`)
+          break
         }
         
         return
       }
       
-      const resultBody = JSON.parse(await result.text())
-      const sessionToken = resultBody.session_token;
-      if (sessionToken == null) {
-        setErrorMessage("Malformed response from server, please try again later")
-        setLoggingIn(false)
-        return
-      }
-      
-      setSessionToken(sessionToken)
+      setSessionToken(unwrap(result).session_token)
       redirect("/")
     })()
   }
