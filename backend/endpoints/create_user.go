@@ -1,8 +1,8 @@
 package endpoints
 
 import (
+	"backend/errors"
 	"backend/users"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,13 +28,14 @@ import (
 // 400 Bad Request
 //
 // {
+//   "code": "...",
 //   "message": "..."
 // }
 //
 func CreateUser(c *gin.Context) {
 	if !checkRole(c, users.RoleHRD) && !checkRole(c, users.RoleAdmin) {
 		// only Admin and HRD can create users
-		c.JSON(http.StatusUnauthorized, makeError("only Admin or HRD, allowed to make new users"))
+		c.JSON(http.StatusUnauthorized, makeError("only Admin or HRD, allowed to make new users", errors.MissingPrivileges))
 		return
 	}
 	
@@ -43,14 +44,14 @@ func CreateUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&body)
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError(fmt.Sprintf("invalid request: %s", err)))
+		c.JSON(http.StatusBadRequest, makeError("invalid request", err))
 		return
 	}
 	
 	err = users.CreateUser(&body)
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError(fmt.Sprintf("Error creating user: %s", err)))
+		c.JSON(http.StatusBadRequest, makeError("Error creating user", err))
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H {})

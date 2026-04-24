@@ -3,7 +3,6 @@ package endpoints
 import (
 	"backend/errors"
 	"backend/users"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,6 +27,7 @@ import (
 // 400 Bad Request
 //
 // {
+//   "code": "...",
 //   "message": "..."
 // }
 //
@@ -42,7 +42,7 @@ func Login(c *gin.Context) {
 	err := c.ShouldBindJSON(&body)
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError(fmt.Sprintf("invalid request: %s", err)))
+		c.JSON(http.StatusBadRequest, makeError("invalid request", err))
 		return
 	}
 	
@@ -54,7 +54,7 @@ func Login(c *gin.Context) {
 	}
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError(fmt.Sprintf("error logging in: %s", err)))
+		c.JSON(http.StatusBadRequest, makeError("error logging in", err))
 		return
 	}
 	

@@ -24,15 +24,16 @@ import (
 // 400 Bad Request
 //
 // {
+//   "code": "...",
 //   "message": "..."
 // }
 //
 
 func Me(c *gin.Context) {
-	current := getCurrentUser(c)
+	current, err := getCurrentUser(c)
 	
 	if current == nil {
-		c.JSON(http.StatusBadRequest, makeError("Cannot retrieve current user"))
+		c.JSON(http.StatusBadRequest, makeError("Cannot retrieve current user", err))
 		return
 	}
 	

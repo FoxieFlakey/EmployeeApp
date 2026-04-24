@@ -1,10 +1,16 @@
 package endpoints
 
-import "github.com/gin-gonic/gin"
+import (
+	"backend/errors"
+	"fmt"
 
-func makeError(message string) gin.H {
+	"github.com/gin-gonic/gin"
+)
+
+func makeError(message string, err error) gin.H {
 	return gin.H {
-		"message": message,
+		"message": fmt.Sprintf("%s: %s", message, errors.MakeErrorMessage(err)),
+		"code": errors.MakeErrorCode(err),
 	}
 }
 
