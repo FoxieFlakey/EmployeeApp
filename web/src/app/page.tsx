@@ -1,9 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-
-const WEB_URL = `http://${ process.env.NEXT_PUBLIC_WEB_HOSTNAME }:${ process.env.NEXT_PUBLIC_WEB_PORT }`;
-const API_URL = `http://${ process.env.NEXT_PUBLIC_API_HOSTNAME }:${ process.env.NEXT_PUBLIC_API_PORT }`;
+import { API_URL, WEB_URL } from "./config";
 
 function ApiPing() {
   const [ loading, setLoading ] = useState(true);
