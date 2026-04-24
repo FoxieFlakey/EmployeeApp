@@ -1,13 +1,11 @@
 package users
 
 import (
+	"backend/errors"
 	"backend/state"
 	"database/sql"
-	"errors"
 	"time"
 )
-
-var TokenIsInvalid = errors.New("TokenIsInvalid")
 
 func GetUserInfoFromSessionToken(token string) (*UserInfo, error) {
 	var userId int64
@@ -20,7 +18,7 @@ func GetUserInfoFromSessionToken(token string) (*UserInfo, error) {
 	
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, TokenIsInvalid
+			return nil, errors.InvalidSessionToken
 		}
 		
 		return nil, err
@@ -28,7 +26,7 @@ func GetUserInfoFromSessionToken(token string) (*UserInfo, error) {
 	
 	if expireAt.Before(time.Now()) {
 		// Token is expired
-		return nil, TokenIsInvalid
+		return nil, errors.InvalidSessionToken
 	}
 	
 	return FindUserById(userId)

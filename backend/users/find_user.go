@@ -1,6 +1,7 @@
 package users
 
 import (
+	"backend/errors"
 	"backend/state"
 	"database/sql"
 )
@@ -19,7 +20,7 @@ func FindUserById(id int64) (*UserInfo, error) {
 	).Scan(&username, &fullname, &display_name, &user_role, &is_frozen, &password_hash)
 	
 	if err == sql.ErrNoRows {
-		return nil, UnknownUser
+		return nil, errors.UnknownUser
 	}
 	
 	if err != nil {
@@ -50,7 +51,7 @@ func FindUser(username string) (*UserInfo, error) {
 	).Scan(&id, &fullname, &display_name, &user_role, &is_frozen, &password_hash)
 	
 	if err == sql.ErrNoRows {
-		return nil, UnknownUser
+		return nil, errors.UnknownUser
 	}
 	
 	if err != nil {

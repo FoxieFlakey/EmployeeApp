@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"backend/errors"
 	"backend/users"
 	"fmt"
 	"net/http"
@@ -47,7 +48,7 @@ func Login(c *gin.Context) {
 	
 	sessionToken, err := users.Login(body)
 	
-	if err == users.InvalidPassword {
+	if err == errors.WrongPassword {
 		c.JSON(http.StatusUnauthorized, gin.H {})
 		return
 	}

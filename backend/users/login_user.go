@@ -1,19 +1,14 @@
 package users
 
 import (
+	"backend/errors"
 	"backend/utils"
-	"errors"
 )
 
 type LoginInfo struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
-
-var UnknownUser = errors.New("UnknownUser")
-var FrozenUser = errors.New("UserIsFrozen")
-var InvalidPassword = errors.New("InvalidPassword")
-var ServerError = errors.New("ServerError")
 
 // Returns session token that can be used to authenticate
 // other request
@@ -24,15 +19,15 @@ func Login(info LoginInfo) (*string, error) {
 	}
 	
 	if user == nil {
-		return nil, UnknownUser
+		return nil, errors.UnknownUser
 	}
 	
 	if user.IsFrozen {
-		return nil, FrozenUser
+		return nil, errors.FrozenUser
 	}
 	
 	if !utils.CheckPassword(info.Password, user.PasswordHash) {
-		return nil, InvalidPassword
+		return nil, errors.WrongPassword
 	}
 	
 	return CreateSession(*user)

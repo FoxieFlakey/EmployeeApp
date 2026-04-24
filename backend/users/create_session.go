@@ -1,13 +1,11 @@
 package users
 
 import (
+	"backend/errors"
 	"backend/state"
 	"backend/utils"
-	"errors"
 	"time"
 )
-
-var TemporaryError = errors.New("ServerError")
 
 func CreateSession(user UserInfo) (*string, error) {
 	// Keep repeating atleast 5 times
@@ -42,6 +40,6 @@ func CreateSession(user UserInfo) (*string, error) {
 	
 	// Couldn't generate unique session token
 	// in 5 tries (should almost never occured)
-	return nil, TemporaryError
+	return nil, errors.ServerError
 }
 

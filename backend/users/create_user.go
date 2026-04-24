@@ -1,15 +1,10 @@
 package users
 
 import (
+	"backend/errors"
 	"backend/state"
 	"backend/utils"
-	"errors"
 )
-
-var DuplicateUsername = errors.New("DuplicateUsername")
-var IllegalUsernam = errors.New("IllegalUsernam")
-var InsecurePasswor = errors.New("InsecurePasswor")
-var ServerErro = errors.New("ServerErro")
 
 type CreateInfo struct {
 	Username string `json:"username" binding:"required,min=3"`
@@ -39,7 +34,7 @@ func CreateUser(info *CreateInfo) (error) {
 	
 	if count == 0 {
 		// There duplicate user because nothing was done
-		return DuplicateUsername;
+		return errors.DuplicateUsername;
 	}
 	
 	return nil
