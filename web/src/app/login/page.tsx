@@ -29,8 +29,14 @@ export default function LoginScreen() {
       })
       
       if (!result.ok) {
-        setErrorMessage("Cannot login, please try again later")
         setLoggingIn(false)
+        if (result.status == 401) {
+          // Wrong password
+          setErrorMessage("Incorrect password, try again")
+        } else {
+          setErrorMessage("Cannot login, please try again later")
+        }
+        
         return
       }
       
