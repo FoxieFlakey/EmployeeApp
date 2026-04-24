@@ -35,11 +35,6 @@ func Login(info LoginInfo) (*string, error) {
 		return nil, InvalidPassword
 	}
 	
-	token, err := CreateSession(*user)
-	if err != nil {
-		return nil, err
-	}
-	
-	return token, nil
+	return CreateSession(*user)
 }
 
