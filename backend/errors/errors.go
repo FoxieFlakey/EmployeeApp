@@ -18,16 +18,24 @@ var MissingPrivileges = errors.New("MissingPrivileges")
 func MakeErrorMessage(e error) string {
 	switch e {
 	case DuplicateUsername:
+		return e.Error()
 	case IllegalUsername:
+		return e.Error()
 	case InsecurePassword:
+		return e.Error()
 	case WrongPassword:
+		return e.Error()
 	case ServerError:
+		return e.Error()
 	case UnknownUser:
+		return e.Error()
 	case InvalidSessionToken:
+		return e.Error()
 	case FrozenUser:
 		return e.Error()
+	default:
+		return ServerError.Error()
 	}
-	return ServerError.Error()
 }
 
 func MakeErrorCode(e error) string {
