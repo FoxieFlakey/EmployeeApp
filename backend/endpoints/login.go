@@ -34,7 +34,11 @@ import (
 //
 // Or incase of wrong password
 // 401 Unauthorized
-// {}
+//
+// {
+//   "code": "...",
+//   "message": "..."
+// }
 
 func Login(c *gin.Context) {
 	var body users.LoginInfo
@@ -48,13 +52,13 @@ func Login(c *gin.Context) {
 	
 	sessionToken, err := users.Login(body)
 	
-	if err == errors.WrongPassword {
-		c.JSON(http.StatusUnauthorized, gin.H {})
-		return
-	}
-	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("error logging in", err))
+		status := http.StatusBadRequest
+		if err == errors.WrongPassword {
+			status = http.StatusUnauthorized
+		}
+		
+		c.JSON(status, makeError("error logging in", err))
 		return
 	}
 	
