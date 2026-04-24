@@ -5,10 +5,9 @@ import { useState } from "react";
 
 import styles from "./page.module.css"
 import { setSessionToken } from "../session";
-import Backend from "../backend/lib";
-import { LoginResult } from "../backend/login";
-import { unwrap, unwrap_err as unwrapErr } from "../backend/result";
-import { ErrorCode } from "../backend/error";
+import Backend from "@/lib/backend/lib";
+import { unwrap, unwrap_err as unwrapErr } from "@/lib/backend/result";
+import { ErrorCode } from "@/lib/backend/error";
 
 export default function LoginScreen() {
   const [ errorMessage, setErrorMessage ] = useState<string | null>(null)

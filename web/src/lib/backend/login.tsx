@@ -1,6 +1,6 @@
 'use client';
 
-import { API_URL } from "../config";
+import { API_URL } from "../../app/config";
 import { Error, ErrorCode, validateErrorResponse } from "./error";
 import { failed, ok, Result } from "./result";
 

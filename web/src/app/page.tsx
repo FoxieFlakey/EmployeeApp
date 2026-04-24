@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { API_URL, WEB_URL } from "./config";
-import * as Backend from "./backend/me";
+import * as Backend from "@/lib/backend/me";
 import { getSessionToken } from "./session";
-import { ErrorCode } from "./backend/error";
+import { ErrorCode } from "@/lib/backend/error";
 
 function ApiPing() {
   const [ loading, setLoading ] = useState(true);
