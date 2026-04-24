@@ -1,0 +1,15 @@
+Privileges of Accounting and Developer 
+1. Change password
+2. Change username
+3. Change display name
+
+Privileges of HRD
+1. All privileges of Accounting and Developer
+2. Can add new user and set their role but cannot modify existing one
+3. Freeze an account
+
+Privileges of Admin
+1. All privliges of HRD
+2. Modify any user's information (password, user name, display name)
+3. Freely modify the role of any user (including themselves)
+4. Unfreeze and delete an account

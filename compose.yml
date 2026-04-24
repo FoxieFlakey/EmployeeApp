@@ -31,7 +31,15 @@ services:
       - PORT=${NEXT_PUBLIC_API_PORT}
     env_file:
       - ./.env
+      - ./config/database.env
       - ./config/backend.env
+    networks:
+      - default
+      - backend_net
+    depends_on:
+      database:
+        condition: service_healthy
+        required: false
     # Docker compose's watcher so application automatically updates
     develop:
       watch:
@@ -40,4 +48,33 @@ services:
           path: ./backend
         - action: rebuild
           path: ./backend/Dockerfile
+  # Database optionally can be started if not
+  # having external instance
+  database:
+    build: database
+    ports:
+      - 3306:3306
+    env_file:
+      - ./config/database.env
+    profiles:
+      - internalDatabase
+    networks:
+      - backend_net
+      - default
+    # Check till mysql is ready, so API server does not start till database ready
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    develop:
+      watch:
+        # rebuild when code dockerfile/seeds updated
+        - action: rebuild
+          path: ./database
+
+networks:
+  backend_net:
+    internal: true
 
