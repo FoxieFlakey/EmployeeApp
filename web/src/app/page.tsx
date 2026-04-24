@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { API_URL, WEB_URL } from "./config";
+import * as Backend from "./backend/me";
+import { getSessionToken } from "./session";
+import { ErrorCode } from "./backend/error";
 
 function ApiPing() {
   const [ loading, setLoading ] = useState(true);
@@ -9,19 +12,28 @@ function ApiPing() {
   const [ response, setResponse ] = useState<string | null>(null);
   
   useEffect(() => {
-    fetch(API_URL + "/ping")
-      .then((fetchResponse) => {
-        if (!fetchResponse.ok) {
-          setError(fetchResponse.statusText)
-          return Promise.resolve(null)
-        } else {
-          return fetchResponse.text()
-        }
-      })
-      .then((responseText) => {
-        setResponse(responseText)
+    (async () => {
+      const token = getSessionToken()
+      if (token == null) {
+        setError("You're not logged in, please login")
         setLoading(false)
-      })
+        return
+      }
+      
+      const me = await Backend.me(token)
+      if (!me.ok) {
+        if (me.value.code == ErrorCode.InvalidSessionToken) {
+          setError("You're not logged in, please login")
+        } else {
+          setError("Cannot retrieve your user info: " + me.value.message)
+        }
+        setLoading(false)
+        return
+      }
+      
+      setResponse(JSON.stringify(me.value))
+      setLoading(false)
+    })()
   }, []);
   
   if (loading) {

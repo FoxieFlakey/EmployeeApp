@@ -6,6 +6,7 @@
 'use client';
 
 import { login } from "./login";
+import { me } from "./me";
 
 export enum UserRole {
   Admin = "Admin",
@@ -23,6 +24,7 @@ export interface UserInfo {
 }
 
 export default {
-  login
+  login,
+  me
 }
 
