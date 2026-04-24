@@ -12,8 +12,15 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        <div className={ styles.content }>{children}</div>
-        <div className={ styles.filler } />
+        
+        <table className={ styles.dividerTable }><tbody><tr>
+          <td className={ styles.sideMenu }>
+            abc
+          </td>
+          <td className={ styles.content }>
+            {children}
+          </td>
+        </tr></tbody></table>
       </body>
     </html>
   );
