@@ -1,11 +1,11 @@
 package main
 
 import (
-	"backend/utils"
+	"backend/state"
+	"backend/users"
 	"crypto/rand"
 	"database/sql"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"os"
 
@@ -16,7 +16,6 @@ import (
 	_ "golang.org/x/crypto/argon2"
 )
 
-var database *sql.DB;
 
 func main() {
 	web_hostname := os.Getenv("NEXT_PUBLIC_WEB_HOSTNAME")
@@ -31,7 +30,7 @@ func main() {
 	
 	// the format is username:password@tcp(host:port)/dbname
 	var err error;
-	database, err = sql.Open("postgres", fmt.Sprintf(
+	state.Database, err = sql.Open("postgres", fmt.Sprintf(
 		"user=%s password=%s host=%s port=%s dbname=%s sslmode=disable",
 		database_user,
 		database_password,
@@ -72,7 +71,7 @@ func main() {
 func tryMakeFirstUser() bool {
 	// ignore any data, only want to know if there any records or not
 	var ignored string
-	err := database.QueryRow("SELECT 1 FROM Users LIMIT 1").Scan(&ignored)
+	err := state.Database.QueryRow("SELECT 1 FROM Users LIMIT 1").Scan(&ignored)
 	if err != nil && err != sql.ErrNoRows {
 		fmt.Printf("Error, cannot check database if there any user: %s\n", err.Error())
 		return false
@@ -92,15 +91,15 @@ func tryMakeFirstUser() bool {
 	}
 	
 	password := hex.EncodeToString(passwordUnencoded)
-	userInfo := CreateUserInfo {
-		username: "admin",
-		fullName: "The Administrator",
-		password: password,
-		displayName: "Administrator",
-		role: RoleAdmin,
+	userInfo := users.UserInfo {
+		Username: "admin",
+		FullName: "The Administrator",
+		Password: password,
+		DisplayName: "Administrator",
+		Role: users.RoleAdmin,
 	}
 	
-	err = createUser(&userInfo)
+	err = users.CreateUser(&userInfo)
 	
 	if err != nil {
 		fmt.Printf("Cannot create initial user: %s\n", err)
@@ -108,57 +107,10 @@ func tryMakeFirstUser() bool {
 	}
 	
 	fmt.Println("Initial user created")
-	fmt.Printf("Username: %s\n", userInfo.username)
-	fmt.Printf("Password: %s\n", userInfo.password)
+	fmt.Printf("Username: %s\n", userInfo.Username)
+	fmt.Printf("Password: %s\n", userInfo.Password)
 	
 	return true
-}
-
-type UserRole string
-const (
-	RoleAdmin UserRole = "Admin"
-	RoleHRD UserRole = "HRD"
-	RoleDeveloper UserRole = "Developer"
-	RoleAccounting UserRole = "Accounting"
-)
-
-type CreateUserInfo struct {
-	username string;
-	fullName string;
-	displayName string;
-	password string;
-	role UserRole;
-}
-
-var DuplicateUsername = errors.New("DuplicateUsername")
-var IllegalUsernam = errors.New("IllegalUsernam")
-var InsecurePasswor = errors.New("InsecurePasswor")
-var ServerErro = errors.New("ServerErro")
-
-func createUser(info *CreateUserInfo) (error) {
-	hashedPassword := utils.HashPassword(info.password);
-	
-	result, err := database.Exec(
-		"INSERT INTO Users (username, fullname, display_name, user_role, password_hash) " +
-		"VALUES ($1, $2, $3, $4, $5) ON CONFLICT (username) DO NOTHING",
-		info.username, info.fullName, info.displayName, info.role, hashedPassword,
-	)
-	
-	if err != nil {
-		return err;
-	}
-	
-	count, err := result.RowsAffected()
-	if err != nil {
-		return err;
-	}
-	
-	if count == 0 {
-		// There duplicate user because nothing was done
-		return DuplicateUsername;
-	}
-	
-	return nil
 }
 
 
