@@ -16,7 +16,7 @@ type CreateInfo struct {
 	FullName string `json:"fullname" binding:"required,min=3"`
 	DisplayName string `json:"display_name" binding:"required,min=3"`
 	Password string `json:"password" binding:"required,min=10"`
-	Role UserRole `json:"role" binding:"required oneof=Admin HRD Developer Accounting"`;
+	Role UserRole `json:"role" binding:"required,oneof=Admin HRD Developer Accounting"`;
 }
 
 func CreateUser(info *CreateInfo) (error) {
