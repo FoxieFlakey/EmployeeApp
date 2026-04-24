@@ -24,7 +24,6 @@ func FindUser(username string) (*UserInfo, error) {
 	}
 	
 	if err != nil {
-		fmt.Printf("A: %s\n", err)
 		return nil, err
 	}
 	
