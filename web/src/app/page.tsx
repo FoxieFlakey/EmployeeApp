@@ -5,11 +5,13 @@ import { API_URL, WEB_URL } from "./config";
 import * as Backend from "@/lib/backend/me";
 import { getSessionToken } from "./session";
 import { ErrorCode } from "@/lib/backend/error";
+import ProfileCard from "@/components/profile_card";
+import { UserInfo } from "@/lib/backend/lib";
 
-function ApiPing() {
+export default function Home() {
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState<string | null>(null);
-  const [ response, setResponse ] = useState<string | null>(null);
+  const [ info, setInfo ] = useState<UserInfo | null>(null);
   
   useEffect(() => {
     (async () => {
@@ -31,35 +33,22 @@ function ApiPing() {
         return
       }
       
-      setResponse(JSON.stringify(me.value))
+      setInfo(me.value)
       setLoading(false)
     })()
   }, []);
   
-  if (loading) {
-    return <p>Loading...</p>
+  var card = <ProfileCard userInfo={ info } isLoading={ loading } />
+  if (!loading && error != null) {
+    // Error occured
+    card = <p>
+      Sorry, there was an error while loading user profile: { error }
+    </p>
   }
   
-  if (response) {
-    return <p>Got response: { response }</p>
-  }
-  
-  return <p>An error occured: { error }</p>
-}
-
-export default function Home() {
   return (
     <>
-      <p>
-        Response from backend is
-      </p>
-      
-      <div style={{
-        margin: "5px",
-        backgroundColor: "#888888"
-      }}>
-        <ApiPing />
-      </div>
+      { card }
       
       <p>
         URL for web is <a href={ WEB_URL }>{ WEB_URL }</a><br></br>
