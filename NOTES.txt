@@ -7,6 +7,8 @@ Privileges of HRD
 1. All privileges of Accounting and Developer
 2. Can add new user and set their role but cannot modify existing one
 3. Freeze an account
+4. See all users that exists
+5. See frozen account
 
 Privileges of Admin
 1. All privliges of HRD

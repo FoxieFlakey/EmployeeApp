@@ -15,6 +15,7 @@ type UserInfo struct {
 	DisplayName string;
 	PasswordHash string;
 	Role UserRole;
+	IsFrozen bool;
 }
 
 

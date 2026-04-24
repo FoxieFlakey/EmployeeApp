@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/endpoints"
 	"backend/state"
 	"backend/users"
 	"crypto/rand"
@@ -65,6 +66,9 @@ func main() {
 		})
 	})
 	
+	router.POST("/create_user", endpoints.CreateUser)
+	router.POST("/login", endpoints.Login)
+	
 	router.Run()
 }
 
@@ -109,6 +113,20 @@ func tryMakeFirstUser() bool {
 	fmt.Println("Initial user created")
 	fmt.Printf("Username: %s\n", userInfo.Username)
 	fmt.Printf("Password: %s\n", userInfo.Password)
+	
+	fmt.Println("Logging in, test")
+	loginInfo := users.LoginInfo {
+		Username: userInfo.Username,
+		Password: userInfo.Password,
+	}
+	
+	sessionToken, err := users.Login(loginInfo)
+	if err != nil {
+		fmt.Printf("Failed to test login: %s\n", err)
+		return false;
+	}
+	
+	fmt.Printf("Login succesful, session token: %s\n", *sessionToken)
 	
 	return true
 }

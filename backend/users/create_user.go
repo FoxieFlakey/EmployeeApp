@@ -12,11 +12,11 @@ var InsecurePasswor = errors.New("InsecurePasswor")
 var ServerErro = errors.New("ServerErro")
 
 type CreateInfo struct {
-	Username string;
-	FullName string;
-	DisplayName string;
-	Password string;
-	Role UserRole;
+	Username string `json:"username" binding:"required,min=3"`
+	FullName string `json:"fullname" binding:"required,min=3"`
+	DisplayName string `json:"display_name" binding:"required,min=3"`
+	Password string `json:"password" binding:"required,min=10"`
+	Role UserRole `json:"role" binding:"required oneof=Admin HRD Developer Accounting"`;
 }
 
 func CreateUser(info *CreateInfo) (error) {
