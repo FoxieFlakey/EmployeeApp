@@ -3,11 +3,15 @@ module backend
 go 1.26.2
 
 require github.com/gin-gonic/gin v1.12.0
+
 require github.com/gin-contrib/cors v1.7.7
-require github.com/go-sql-driver/mysql v1.9.3
 
 require (
-	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/lib/pq v1.12.3
+	golang.org/x/crypto v0.50.0
+)
+
+require (
 	github.com/bytedance/gopkg v0.1.4 // indirect
 	github.com/bytedance/sonic v1.15.0 // indirect
 	github.com/bytedance/sonic/loader v0.5.1 // indirect
@@ -32,7 +36,6 @@ require (
 	github.com/ugorji/go/codec v1.3.1 // indirect
 	go.mongodb.org/mongo-driver/v2 v2.5.1 // indirect
 	golang.org/x/arch v0.26.0 // indirect
-	golang.org/x/crypto v0.50.0 // indirect
 	golang.org/x/net v0.53.0 // indirect
 	golang.org/x/sys v0.43.0 // indirect
 	golang.org/x/text v0.36.0 // indirect

@@ -53,7 +53,7 @@ services:
   database:
     build: database
     ports:
-      - 3306:3306
+      - 5432:5432
     env_file:
       - ./config/database.env
     profiles:
@@ -63,7 +63,7 @@ services:
       - default
     # Check till mysql is ready, so API server does not start till database ready
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      test: pg_isready -h 127.0.0.1 -p $$DATABASE_PORT -U $$POSTGRES_USER -d $$POSTGRES_DB
       interval: 5s
       timeout: 5s
       retries: 5

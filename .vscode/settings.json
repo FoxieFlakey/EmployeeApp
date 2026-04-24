@@ -1,19 +1,15 @@
 {
   "sqltools.connections": [
     {
-      "mysqlOptions": {
-        "authProtocol": "default",
-        "enableSsl": "Disabled"
-      },
       "ssh": "Disabled",
       "previewLimit": 50,
       "server": "localhost",
-      "port": 3306,
-      "driver": "MySQL",
-      "password": "please_replace_me",
-      "username": "app",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Emplyee Apps",
       "database": "EmployeeApp",
-      "name": "Employee App database"
+      "password": "please_replace_me",
+      "username": "app"
     }
   ]
 }

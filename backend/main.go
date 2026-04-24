@@ -12,7 +12,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	_ "golang.org/x/crypto/argon2"
 )
 
@@ -25,14 +25,14 @@ func main() {
 	database_hostname := os.Getenv("DATABASE_HOSTNAME")
 	database_port := os.Getenv("DATABASE_PORT")
 	
-	database_user := os.Getenv("MYSQL_USER")
-	database_password := os.Getenv("MYSQL_PASSWORD")
-	database_name := os.Getenv("MYSQL_DATABASE")
+	database_user := os.Getenv("POSTGRES_USER")
+	database_password := os.Getenv("POSTGRES_PASSWORD")
+	database_name := os.Getenv("POSTGRES_DB")
 	
 	// the format is username:password@tcp(host:port)/dbname
 	var err error;
-	database, err = sql.Open("mysql", fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s",
+	database, err = sql.Open("postgres", fmt.Sprintf(
+		"user=%s password=%s host=%s port=%s dbname=%s sslmode=disable",
 		database_user,
 		database_password,
 		database_hostname,
@@ -140,7 +140,7 @@ func createUser(info *CreateUserInfo) (error) {
 	
 	database.Exec(
 		"INSERT INTO Users (username, fullname, display_name, user_role, password_hash) " +
-		"VALUES (?, ?, ?, ?, ?) ",
+		"VALUES ($1, $2, $3, $4, $5) ",
 		info.username, info.fullName, info.displayName, info.role, hashedPassword,
 	)
 	
