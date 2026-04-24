@@ -91,7 +91,7 @@ func tryMakeFirstUser() bool {
 	}
 	
 	password := hex.EncodeToString(passwordUnencoded)
-	userInfo := users.UserInfo {
+	userInfo := users.CreateInfo {
 		Username: "admin",
 		FullName: "The Administrator",
 		Password: password,

@@ -9,10 +9,11 @@ const (
 )
 
 type UserInfo struct {
+	Id int64;
 	Username string;
 	FullName string;
 	DisplayName string;
-	Password string;
+	PasswordHash string;
 	Role UserRole;
 }
 

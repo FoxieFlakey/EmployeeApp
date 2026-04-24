@@ -11,7 +11,15 @@ var IllegalUsernam = errors.New("IllegalUsernam")
 var InsecurePasswor = errors.New("InsecurePasswor")
 var ServerErro = errors.New("ServerErro")
 
-func CreateUser(info *UserInfo) (error) {
+type CreateInfo struct {
+	Username string;
+	FullName string;
+	DisplayName string;
+	Password string;
+	Role UserRole;
+}
+
+func CreateUser(info *CreateInfo) (error) {
 	hashedPassword := utils.HashPassword(info.Password);
 	
 	result, err := state.Database.Exec(
