@@ -54,6 +54,7 @@ func main() {
 	
 	router.Use(cors.New(cors.Config {
 		AllowAllOrigins: false,
+		AllowHeaders: []string { "Authorization" },
 		AllowOrigins: []string {
 			"http://" + web_hostname,
 			"http://" + web_hostname + ":" + web_port + "",
