@@ -66,6 +66,7 @@ func main() {
 		})
 	})
 	
+	router.GET("/me", endpoints.Me)
 	router.POST("/create_user", endpoints.CreateUser)
 	router.POST("/login", endpoints.Login)
 	
