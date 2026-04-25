@@ -34,6 +34,7 @@ func FindUserById(id int64) (*UserInfo, error) {
 		FullName: fullname,
 		PasswordHash: password_hash,
 		Role: UserRole(user_role),
+		IsFrozen: is_frozen,
 	}, nil
 }
 
@@ -65,6 +66,7 @@ func FindUser(username string) (*UserInfo, error) {
 		FullName: fullname,
 		PasswordHash: password_hash,
 		Role: UserRole(user_role),
+		IsFrozen: is_frozen,
 	}, nil
 }
 
