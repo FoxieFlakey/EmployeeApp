@@ -9,6 +9,9 @@ import Backend, { UserInfo } from "@/lib/backend/lib"
 import { UserList } from "@/lib/backend/list_user"
 import { Result } from "@/lib/backend/result"
 import { Error } from "@/lib/backend/error"
+import StyledButton from "@/components/button"
+import { WEB_URL } from "@/app/config"
+import IconButton from "@/components/icon_button"
 
 export default function Users() {
   const { token } = useContext(UserContext)
@@ -37,7 +40,7 @@ export default function Users() {
   }, [token])
   
   // Keep the counting matching number of headers in <thead> element
-  const columnsCount = 5
+  const columnsCount = 6
   
   let data: ReactNode[] = []
   if (users != null) {
@@ -51,6 +54,17 @@ export default function Users() {
           <td>{ user.value.display_name }</td>
           <td>{ user.value.fullname }</td>
           <td>{ user.value.role }</td>
+          <td>
+            {
+              user.value.is_frozen ?
+              <IconButton title="Unfreeze This Account" >
+                <img src={ WEB_URL + "/Unfreeze Icon.png" } width="16" height="16" />
+              </IconButton> :
+              <IconButton title="Freeze This Account" >
+                <img src={ WEB_URL + "/Freeze Icon.png" } width="16" height="16" />
+              </IconButton>
+            }
+          </td>
         </tr>
       } else {
         return <tr key={ id.toString() }>
@@ -64,6 +78,12 @@ export default function Users() {
   }
   
   return <>
+    <h1>List of registered users</h1>
+    <StyledButton>
+      <img src={ WEB_URL + "/Plus Icon.png" } width="16" height="16" />
+      Create User
+    </StyledButton>
+    
     <table className={ styles.users_table }>
       <thead>
         <tr>
@@ -72,6 +92,7 @@ export default function Users() {
           <th>Display Name</th>
           <th>Full Name</th>
           <th>Role</th>
+          <th>Actions</th>
         </tr>
       </thead>
       
