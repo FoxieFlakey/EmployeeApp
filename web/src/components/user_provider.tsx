@@ -42,7 +42,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   
   // Make the token up to date, retrieved from local storage
   useEffect(() => {
-    setTokenInner(getSessionToken())
+    setToken(getSessionToken())
   }, [])
   
   return <UserContext.Provider value={{ token, userInfo, setToken }}>
