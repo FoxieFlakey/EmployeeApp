@@ -1,0 +1,21 @@
+.navbar_item {
+  width: 100%;
+  background-color: #dddddd;
+  border: none;
+  padding: 5px;
+  font-size: large;
+  text-align: left;
+}
+
+.navbar_current {
+  background-color: #888888;
+}
+
+.navbar_item:hover {
+  background-color: #aaaaaa;
+}
+
+.navbar_item:active {
+  background-color: #888888;
+}
+
