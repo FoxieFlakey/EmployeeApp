@@ -7,14 +7,30 @@ import (
 )
 
 type CreateInfo struct {
-	Username string `json:"username" binding:"required,min=3"`
-	FullName string `json:"fullname" binding:"required,min=3"`
-	DisplayName string `json:"display_name" binding:"required,min=3"`
-	Password string `json:"password" binding:"required,min=10"`
+	Username string `json:"username" binding:"required"`
+	FullName string `json:"fullname" binding:"required"`
+	DisplayName string `json:"display_name"`
+	Password string `json:"password" binding:"required"`
 	Role UserRole `json:"role" binding:"required,oneof=Admin HRD Developer Accounting"`;
 }
 
 func CreateUser(info *CreateInfo) (error) {
+	if (len(info.Password) < 10) {
+		return errors.InsecurePassword
+	}
+	
+	if (len(info.Username) < 3) {
+		return errors.IllegalUsername
+	}
+	
+	if (len(info.FullName) < 3) {
+		return errors.IllegalFullname
+	}
+	
+	if (len(info.DisplayName) < 3) {
+		return errors.IllegalDisplayName
+	}
+	
 	hashedPassword := utils.HashPassword(info.Password);
 	
 	result, err := state.Database.Exec(

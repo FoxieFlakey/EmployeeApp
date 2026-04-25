@@ -140,6 +140,9 @@ export default function Users() {
         case ErrorCode.IllegalUsername:
           setErrorMessageForAddUser("Invalid username")
           break
+        case ErrorCode.IllegalFullname:
+          setErrorMessageForAddUser("Invalid fullname")
+          break
         case ErrorCode.InsecurePassword:
           setErrorMessageForAddUser("Insecure password")
           break

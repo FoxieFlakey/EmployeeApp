@@ -10,7 +10,10 @@ export enum ErrorCode {
   InvalidSessionToken = "InvalidSessionToken",
   FrozenUser = "FrozenUser",
   MissingAuthHeader = "MissingAuthHeader",
-  MissingPrivileges = "MissingPrivileges"
+  MissingPrivileges = "MissingPrivileges",
+  IllegalDisplayName = "IllegalDisplayName",
+  IllegalFullname = "IllegalFullname", 
+  ValidationError = "ValidationError",
 }
 
 export interface Error {
