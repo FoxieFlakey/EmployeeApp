@@ -1,9 +1,10 @@
 'use client';
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { API_URL, WEB_URL } from "@/app/config";
 import ProfileCard from "@/components/profile_card";
 import { UserContext } from "@/components/user_provider";
+import Window from "@/components/window";
 
 export default function Home() {
   const { token, userInfo } = useContext(UserContext)
@@ -23,6 +24,7 @@ export default function Home() {
     </p>
   }
   
+  const [ isOpen, setOpen ] = useState(true)
   return (
     <>
       { card }
@@ -31,6 +33,17 @@ export default function Home() {
         URL for web is <a href={ WEB_URL }>{ WEB_URL }</a><br></br>
         URL for API is <a href={ API_URL }>{ API_URL }</a>
       </p>
+      
+      {
+        isOpen && <Window onClose={ () => {
+          setOpen(false)
+          setTimeout(() => setOpen(true), 1000)
+        } }>
+          meow<br />
+          oivowmvomewopwveopwevvwpowopovpoompopwomppomwvopmwve<br /><br /><br /><br /><br />
+          this is test window
+        </Window>
+      }
     </>
   );
 }

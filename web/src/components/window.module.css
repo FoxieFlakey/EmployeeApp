@@ -1,0 +1,24 @@
+.window {
+  position: absolute;
+  border: 2px solid black;
+  background-color: #666666;
+  display: flex;
+  flex-direction: column;
+}
+
+.window_header {
+  background-color: #aaaaaa;
+  padding: 4px;
+  border-bottom: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+
+.window_content {
+  padding: 4px;
+  flex: 1;
+}
+
