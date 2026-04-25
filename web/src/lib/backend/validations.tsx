@@ -22,6 +22,7 @@ export function validateUserInfoObject(object: unknown): UserInfo | null {
   }
   
   if (
+    !("id" in object) ||
     !("username" in object) ||
     !("display_name" in object) ||
     !("fullname" in object) ||

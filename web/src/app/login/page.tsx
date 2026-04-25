@@ -1,17 +1,19 @@
 'use client'
 
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import styles from "./page.module.css"
 import { setSessionToken } from "../session";
 import Backend from "@/lib/backend/lib";
 import { unwrap, unwrap_err as unwrapErr } from "@/lib/backend/result";
 import { ErrorCode } from "@/lib/backend/error";
+import { UserContext } from "@/components/user_provider";
 
 export default function LoginScreen() {
   const [ errorMessage, setErrorMessage ] = useState<string | null>(null)
   const [ isLoggingIn, setLoggingIn ] = useState(false)
+  const { token, setToken } = useContext(UserContext)
   
   const doSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -43,6 +45,7 @@ export default function LoginScreen() {
         return
       }
       
+      setToken(unwrap(result).session_token)
       setSessionToken(unwrap(result).session_token)
       redirect("/")
     })()

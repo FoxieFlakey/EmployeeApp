@@ -1,21 +1,22 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { API_URL, WEB_URL } from "./config";
 import * as Backend from "@/lib/backend/me";
 import { getSessionToken } from "./session";
 import { ErrorCode } from "@/lib/backend/error";
 import ProfileCard from "@/components/profile_card";
 import { UserInfo } from "@/lib/backend/lib";
+import { UserContext } from "@/components/user_provider";
 
 export default function Home() {
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState<string | null>(null);
   const [ info, setInfo ] = useState<UserInfo | null>(null);
+  const { token } = useContext(UserContext)
   
   useEffect(() => {
     (async () => {
-      const token = getSessionToken()
       if (token == null) {
         setError("You're not logged in, please login")
         setLoading(false)
@@ -36,7 +37,7 @@ export default function Home() {
       setInfo(me.value)
       setLoading(false)
     })()
-  }, []);
+  }, [token]);
   
   var card = <ProfileCard userInfo={ info } isLoading={ loading } />
   if (!loading && error != null) {
