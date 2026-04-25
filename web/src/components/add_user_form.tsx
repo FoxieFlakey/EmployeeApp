@@ -34,7 +34,7 @@ export default function AddUseForm({
     const fullName = data.get("fullName")!.toString()
     const displayName = data.get("fullName")?.toString()
     const username = data.get("username")!.toString()
-    const role = data.get("username")! as UserRole
+    const role = data.get("role")! as UserRole
     const password = data.get("password")!.toString()
     
     setProcessing(true)
