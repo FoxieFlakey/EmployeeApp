@@ -9,6 +9,8 @@ export interface WindowProps {
   onClose?(): void
 }
 
+const SAFE_SPACE = 50
+
 export default function Window({ children, ...props }: WindowProps ) {
   const [ initialized, setInitialized ] = useState(false)
   const [ state, setWindowState ] = useState({
@@ -46,12 +48,50 @@ export default function Window({ children, ...props }: WindowProps ) {
       offsetY: 0
     })
     
+    function onResize() {
+      const state = stateRef.current
+      
+      const [x, y] = calcFinalPos(state.currentX, state.currentY);
+      setWindowState({
+        ...stateRef.current,
+        currentX: x,
+        currentY: y
+      })
+    }
+    
+    window.addEventListener("resize", onResize)
     setInitialized(true)
+    
+    return () => {
+      window.removeEventListener("resize", onResize)
+    }
   }, [])
   
   function calcFinalPos(inputX: number, inputY: number) {
     const state = stateRef.current
-    return [inputX - state.offsetX, inputY - state.offsetY]
+    
+    // Clamps coords so window cant be place in place where
+    // it cant be dragged back to view
+    let finalX = inputX - state.offsetX
+    let finalY = inputY - state.offsetY
+    
+    if (finalX >= document.documentElement.clientWidth - SAFE_SPACE) {
+      finalX = document.documentElement.clientWidth - SAFE_SPACE
+    }
+    
+    if (finalY >= document.documentElement.clientHeight - SAFE_SPACE) {
+      finalY = document.documentElement.clientHeight - SAFE_SPACE
+    }
+    
+    if (finalX < 0) {
+      finalX = 0
+    }
+    
+    if (finalY < 0) {
+      finalY = 0
+    }
+    
+    return [finalX, finalY]
   }
   
   function onPointerMove(event: globalThis.PointerEvent) {
@@ -83,6 +123,8 @@ export default function Window({ children, ...props }: WindowProps ) {
         currentX: x,
         currentY: y,
         isDragging: false,
+        offsetX: 0,
+        offsetY: 0,
         pointer: 0
       })
       
