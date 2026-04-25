@@ -3,7 +3,7 @@ import styles from "./window.module.css";
 import IconButton from "./icon_button";
 import { WEB_URL } from "@/app/config";
 
-interface WindowProps {
+export interface WindowProps {
   children?: ReactNode
   title?: string
   onClose?(): void
