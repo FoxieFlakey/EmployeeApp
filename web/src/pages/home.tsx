@@ -5,6 +5,7 @@ import { API_URL, WEB_URL } from "@/app/config";
 import ProfileCard from "@/components/profile_card";
 import { UserContext } from "@/components/user_provider";
 import Window from "@/components/window";
+import AddUseForm, { AddUserDetail } from "@/components/add_user_form";
 
 export default function Home() {
   const { token, userInfo } = useContext(UserContext)
@@ -25,6 +26,19 @@ export default function Home() {
   }
   
   const [ isOpen, setOpen ] = useState(true)
+  function cancel() {
+    setOpen(false)
+    setTimeout(() => setOpen(true), 1000)
+  }
+  
+  function submit(data: AddUserDetail) {
+    setOpen(false)
+    console.log("Add requested: ")
+    console.log(data)
+    
+    setTimeout(() => setOpen(true), 1000)
+  }
+  
   return (
     <>
       { card }
@@ -35,13 +49,8 @@ export default function Home() {
       </p>
       
       {
-        isOpen && <Window onClose={ () => {
-          setOpen(false)
-          setTimeout(() => setOpen(true), 1000)
-        } }>
-          meow<br />
-          oivowmvomewopwveopwevvwpowopovpoompopwomppomwvopmwve<br /><br /><br /><br /><br />
-          this is test window
+        isOpen && <Window title="Add user" onClose={ cancel }>
+          <AddUseForm onCancel={ cancel } onSubmit={ submit } />
         </Window>
       }
     </>
