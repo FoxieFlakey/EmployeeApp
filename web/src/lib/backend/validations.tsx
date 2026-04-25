@@ -1,3 +1,4 @@
+import { UserList } from "./list_user"
 import { UserInfo, UserRole } from "./lib"
 
 export function validateUserRole(role: unknown): UserRole | null {
@@ -14,6 +15,22 @@ export function validateUserRole(role: unknown): UserRole | null {
   default:
     return null
   }
+}
+
+export function validateUserList(object: unknown): UserList | null {
+  if (object == null || typeof object != "object") {
+    return null
+  }
+  
+  if (
+    !("users" in object) ||
+    !Array.isArray(object.users) ||
+    object.users.find((val) => !(typeof val == "bigint"))
+  ) {
+    return null
+  }
+  
+  return object as UserList
 }
 
 export function validateUserInfoObject(object: unknown): UserInfo | null {

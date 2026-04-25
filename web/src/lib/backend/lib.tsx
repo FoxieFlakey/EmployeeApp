@@ -5,6 +5,8 @@
 // manually doing HTTP fetch calls
 'use client';
 
+import { find_user } from "./find_user";
+import { list_users } from "./list_user";
 import { login } from "./login";
 import { me } from "./me";
 
@@ -26,6 +28,8 @@ export interface UserInfo {
 
 export default {
   login,
+  list_users,
+  find_user,
   me
 }
 

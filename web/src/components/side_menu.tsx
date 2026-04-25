@@ -7,6 +7,7 @@ import Centered from "./centered"
 import { UserContext } from "./user_provider"
 import styles from "./side_menu.module.css"
 import { AppContext, Page } from "@/app/page"
+import { UserRole } from "@/lib/backend/lib"
 
 function NavBarItem({ children, page }: { children?: ReactNode, page: Page }) {
   const { currentPage, setPage } = useContext(AppContext)
@@ -23,7 +24,7 @@ function NavBarItem({ children, page }: { children?: ReactNode, page: Page }) {
 
 export default function SideMenu() {
   const [isLoggedIn, setLoggedIn] = useState(true)
-  const { token, setToken } = useContext(UserContext)
+  const { userInfo, token, setToken } = useContext(UserContext)
   
   useEffect(() => {
     (async () => {
@@ -41,13 +42,23 @@ export default function SideMenu() {
   }
   
   var homeMenu = null
+  var usersMenu = null
   if (isLoggedIn) {
     homeMenu = <NavBarItem page={ Page.HomePage }>Home</NavBarItem>
+    
+    if (userInfo?.ok) {
+      switch (userInfo.value.role) {
+      case UserRole.HRD:
+      case UserRole.Admin:
+        usersMenu = <NavBarItem page={ Page.UsersList }>Users List</NavBarItem>
+      }
+    }
   }
   
   return <>
     <div style={{ marginBottom: "3px" }}>
       { homeMenu }
+      { usersMenu }
     </div>
     
     <Centered>

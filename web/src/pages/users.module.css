@@ -1,0 +1,16 @@
+.users_table {
+  border: 2px solid black;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.users_table > thead > tr > th {
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.users_table > tbody > tr > td {
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
