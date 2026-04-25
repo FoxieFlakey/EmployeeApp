@@ -69,6 +69,9 @@ func main() {
 	
 	router.GET("/me", endpoints.Me)
 	router.GET("/users/:id/profile", endpoints.FindUser)
+	router.POST("/users/:id/freeze", endpoints.FreezeUser)
+	router.POST("/users/:id/unfreeze", endpoints.UnfreezeUser)
+	router.DELETE("/users/:id", endpoints.DeleteUser)
 	router.GET("/users/list", endpoints.ListUsers)
 	router.POST("/create_user", endpoints.CreateUser)
 	router.POST("/login", endpoints.Login)
