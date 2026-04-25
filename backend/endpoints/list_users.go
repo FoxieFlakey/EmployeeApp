@@ -49,19 +49,9 @@ import (
 // }
 
 func ListUsers(c *gin.Context) {
-	currentUser, err := getCurrentUser(c)
-	if err == errors.MissingAuthHeader {
-		c.JSON(http.StatusUnauthorized, makeError("you're unauthenticated", err))
-		return
-	}
-	
-	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("invalid request", err))
-		return
-	}
-	
-	if currentUser.Role != users.RoleAdmin && currentUser.Role != users.RoleHRD {
-		c.JSON(http.StatusUnauthorized, makeError("missing privilege", errors.MissingPrivileges))
+	if !checkRole(c, users.RoleHRD) && !checkRole(c, users.RoleAdmin) {
+		// only Admin and HRD can list users
+		c.JSON(http.StatusUnauthorized, makeError("only Admin or HRD, allowed to list new users", errors.MissingPrivileges))
 		return
 	}
 	
