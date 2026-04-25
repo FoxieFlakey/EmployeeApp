@@ -55,15 +55,20 @@ export default function Users() {
           <td>{ user.value.fullname }</td>
           <td>{ user.value.role }</td>
           <td>
-            {
-              user.value.is_frozen ?
-              <IconButton title="Unfreeze This Account" >
-                <img src={ WEB_URL + "/Unfreeze Icon.png" } width="16" height="16" />
-              </IconButton> :
-              <IconButton title="Freeze This Account" >
-                <img src={ WEB_URL + "/Freeze Icon.png" } width="16" height="16" />
+            <div style={{ display: "flex" }}>
+              {
+                user.value.is_frozen ?
+                <IconButton title="Unfreeze This user" >
+                  <img src={ WEB_URL + "/Unfreeze Icon.png" } width="16" height="16" />
+                </IconButton> :
+                <IconButton title="Freeze This user" >
+                  <img src={ WEB_URL + "/Freeze Icon.png" } width="16" height="16" />
+                </IconButton>
+              }
+              <IconButton title="Delete this user">
+                <img src={ WEB_URL + "/Trash Can Icon.png" } width="16" height="16" />
               </IconButton>
-            }
+            </div>
           </td>
         </tr>
       } else {
