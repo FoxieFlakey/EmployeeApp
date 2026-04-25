@@ -13,6 +13,7 @@ import (
 // 200 Ok
 //
 // {
+//   "id": "...",
 //   "username": "...",
 //   "display_name": "...",
 //   "fullname": "...",
@@ -38,6 +39,7 @@ func Me(c *gin.Context) {
 	}
 	
 	c.JSON(http.StatusOK, gin.H {
+		"id": current.Id,
 		"username": current.Username,
 		"display_name": current.DisplayName,
 		"fullname": current.FullName,

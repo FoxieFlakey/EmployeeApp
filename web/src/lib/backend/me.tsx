@@ -1,3 +1,10 @@
+import JSONBigMaker from "json-bigint"
+const JSONBig = JSONBigMaker({
+  alwaysParseAsBig: true,
+  strict: true,
+  useNativeBigInt: true
+})
+
 import { API_URL } from "../../app/config";
 import { Error, ErrorCode, validateErrorResponse } from "./error";
 import { UserInfo } from "./lib";
@@ -12,7 +19,7 @@ export async function me(sessionToken: string): Promise<Result<UserInfo, Error>>
     }
   })
   
-  const resultBody = JSON.parse(await result.text())
+  const resultBody = JSONBig.parse(await result.text())
   
   if (!result.ok) {
     return failed(validateErrorResponse(resultBody))

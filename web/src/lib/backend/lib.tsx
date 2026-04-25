@@ -16,6 +16,7 @@ export enum UserRole {
 }
 
 export interface UserInfo {
+  id: BigInt,
   username: string,
   display_name: string,
   fullname: string,
