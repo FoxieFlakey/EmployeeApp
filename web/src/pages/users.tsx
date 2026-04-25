@@ -19,6 +19,10 @@ export default function Users() {
   const [ error, setError ] = useState<string | null>(null)
   const [ users, setUsers ] = useState<[Result<UserInfo, Error>, BigInt][] | null>(null)
   
+  // The value of revision actually dont matter, it is used
+  // to trigger re-update of table containing list of users
+  const [ revision, setRevision ] = useState(0)
+  
   useEffect(() => {
     if (token == null) {
       setError("You're not logged in please login, first")
@@ -37,7 +41,7 @@ export default function Users() {
         usersArray.map(async (id) => [await Backend.find_user(token, id), id])
       ))
     })()
-  }, [token])
+  }, [token, revision])
   
   // Keep the counting matching number of headers in <thead> element
   const columnsCount = 6
@@ -46,6 +50,39 @@ export default function Users() {
   if (users != null) {
     data = users.map(item => {
       const [ user, id ] = item
+      
+      async function freezeUser() {
+        if (token != null) {
+          const result = await Backend.freeze_user(token, id)
+          if (!result.ok) {
+            console.error(result.value.message)
+          } else {
+            setRevision(revision + 1)
+          }
+        }
+      }
+      
+      async function unfreezeUser() {
+        if (token != null) {
+          const result = await Backend.unfreeze_user(token, id)
+          if (!result.ok) {
+            console.error(result.value.message)
+          } else {
+            setRevision(revision + 1)
+          }
+        }
+      }
+      
+      async function deleteUser() {
+        if (token != null) {
+          const result = await Backend.delete_user(token, id)
+          if (!result.ok) {
+            console.error(result.value.message)
+          } else {
+            setRevision(revision + 1)
+          }
+        }
+      }
       
       if (user.ok) {
         return <tr key={ id.toString() }>
@@ -58,14 +95,14 @@ export default function Users() {
             <div style={{ display: "flex" }}>
               {
                 user.value.is_frozen ?
-                <IconButton title="Unfreeze This user" >
+                <IconButton title="Unfreeze This user" onClick={() => unfreezeUser() } >
                   <img src={ WEB_URL + "/Unfreeze Icon.png" } width="16" height="16" />
                 </IconButton> :
-                <IconButton title="Freeze This user" >
+                <IconButton title="Freeze This user" onClick={() => freezeUser() } >
                   <img src={ WEB_URL + "/Freeze Icon.png" } width="16" height="16" />
                 </IconButton>
               }
-              <IconButton title="Delete this user">
+              <IconButton title="Delete this user" onClick={() => deleteUser() } >
                 <img src={ WEB_URL + "/Trash Can Icon.png" } width="16" height="16" />
               </IconButton>
             </div>
@@ -89,7 +126,7 @@ export default function Users() {
       Create User
     </StyledButton>
     
-    <table className={ styles.users_table }>
+    <table key={ revision } className={ styles.users_table }>
       <thead>
         <tr>
           <th>ID</th>

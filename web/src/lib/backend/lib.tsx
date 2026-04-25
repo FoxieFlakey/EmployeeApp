@@ -5,6 +5,8 @@
 // manually doing HTTP fetch calls
 'use client';
 
+import { freeze_user, unfreeze_user } from "./freeze_unfreezer_user";
+import { delete_user } from "./delete_user";
 import { find_user } from "./find_user";
 import { list_users } from "./list_user";
 import { login } from "./login";
@@ -30,6 +32,9 @@ export default {
   login,
   list_users,
   find_user,
+  freeze_user,
+  unfreeze_user,
+  delete_user,
   me
 }
 
