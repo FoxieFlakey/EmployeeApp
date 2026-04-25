@@ -68,6 +68,8 @@ func main() {
 	})
 	
 	router.GET("/me", endpoints.Me)
+	router.GET("/users/:id/profile", endpoints.FindUser)
+	router.GET("/users/list", endpoints.ListUsers)
 	router.POST("/create_user", endpoints.CreateUser)
 	router.POST("/login", endpoints.Login)
 	
