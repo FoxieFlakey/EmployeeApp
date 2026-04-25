@@ -37,6 +37,9 @@ export default function LoginScreen() {
         case ErrorCode.UnknownUser:
           setErrorMessage("Cannot find that user, make sure the username typed correctly")
           break
+        case ErrorCode.FrozenUser:
+          setErrorMessage("This account is frozen and can't be log into")
+          break
         default:
           setErrorMessage(`Cannot login, please try again later. Error: ${error.message}`)
           break
