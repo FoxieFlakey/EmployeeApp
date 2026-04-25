@@ -6,12 +6,13 @@ import { ReactNode, useContext, useEffect, useState } from "react"
 import styles from "./users.module.css"
 
 import Backend, { UserInfo } from "@/lib/backend/lib"
-import { UserList } from "@/lib/backend/list_user"
 import { Result } from "@/lib/backend/result"
-import { Error } from "@/lib/backend/error"
+import { Error, ErrorCode } from "@/lib/backend/error"
 import StyledButton from "@/components/button"
 import { WEB_URL } from "@/app/config"
 import IconButton from "@/components/icon_button"
+import ModalWindow from "@/components/modal_window"
+import AddUseForm, { AddUserDetail } from "@/components/add_user_form"
 
 export default function Users() {
   const { token } = useContext(UserContext)
@@ -119,9 +120,49 @@ export default function Users() {
     })
   }
   
+  const [ openedAddUserWindow, setOpenedAddUserWindow ] = useState(false)
+  const [ errorMessageForAddUser, setErrorMessageForAddUser ] = useState<string | null>(null)
+  function cancelAddUser() {
+    setOpenedAddUserWindow(false)
+  }
+  
+  function submitAddUser(data: AddUserDetail) {
+    (async () => {
+      if (token == null) {
+        setErrorMessageForAddUser("You're not logged in, please login first")
+        return
+      }
+      
+      const result = await Backend.create_user(token, data)
+      if (!result.ok) {
+        switch (result.value.code) {
+        case ErrorCode.IllegalUsername:
+          setErrorMessageForAddUser("Invalid username")
+          break
+        case ErrorCode.InsecurePassword:
+          setErrorMessageForAddUser("Insecure password")
+          break
+        case ErrorCode.MissingPrivileges:
+          setErrorMessageForAddUser("You're not allowed to create new users'")
+          break
+        default:
+          setErrorMessageForAddUser(`Error creating user: ${result.value.message}`)
+          break
+        }
+        
+        return
+      }
+      
+      setRevision(revision + 1)
+    })()
+  }
+  
   return <>
     <h1>List of registered users</h1>
-    <StyledButton>
+    <StyledButton onClick={ () => {
+      setErrorMessageForAddUser(null)
+      setOpenedAddUserWindow(true)
+    } }>
       <img src={ WEB_URL + "/Plus Icon.png" } width="16" height="16" />
       Create User
     </StyledButton>
@@ -152,6 +193,17 @@ export default function Users() {
             <>{ error }</>
         }
       </Centered>
+    }
+    
+    {
+      openedAddUserWindow && <ModalWindow onClose={ cancelAddUser }>
+        {
+          errorMessageForAddUser != null && <div className={ styles.errorDiv } >
+            <p>{ errorMessageForAddUser }</p>
+          </div>
+        }
+        <AddUseForm onCancel={ cancelAddUser } onSubmit={ submitAddUser } />
+      </ModalWindow>
     }
   </>
 }

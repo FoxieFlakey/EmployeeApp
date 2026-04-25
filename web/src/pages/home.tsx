@@ -25,20 +25,6 @@ export default function Home() {
     </p>
   }
   
-  const [ isOpen, setOpen ] = useState(true)
-  function cancel() {
-    setOpen(false)
-    setTimeout(() => setOpen(true), 1000)
-  }
-  
-  function submit(data: AddUserDetail) {
-    setOpen(false)
-    console.log("Add requested: ")
-    console.log(data)
-    
-    setTimeout(() => setOpen(true), 1000)
-  }
-  
   return (
     <>
       { card }
@@ -47,12 +33,6 @@ export default function Home() {
         URL for web is <a href={ WEB_URL }>{ WEB_URL }</a><br></br>
         URL for API is <a href={ API_URL }>{ API_URL }</a>
       </p>
-      
-      {
-        isOpen && <ModalWindow title="Add user" onClose={ cancel }>
-          <AddUseForm onCancel={ cancel } onSubmit={ submit } />
-        </ModalWindow>
-      }
     </>
   );
 }

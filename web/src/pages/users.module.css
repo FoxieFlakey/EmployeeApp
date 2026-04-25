@@ -14,3 +14,10 @@
   border-bottom: 2px solid black;
 }
 
+.errorDiv {
+  padding: 3px;
+  background-color: #dd0000;
+  color: black;
+}
+
+
