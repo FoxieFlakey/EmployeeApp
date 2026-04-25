@@ -61,7 +61,6 @@ export default function Window({ children, ...props }: WindowProps ) {
       return
     }
     
-    console.log("move: " + event.pointerId)
     if (event.pointerId == state.pointer) {
       event.preventDefault()
       const [x, y] = calcFinalPos(event.clientX, event.clientY);
@@ -76,7 +75,6 @@ export default function Window({ children, ...props }: WindowProps ) {
   function onPointerUp(event: globalThis.PointerEvent) {
     const state = stateRef.current
     
-    console.log("up: " + event.pointerId)
     if (event.pointerId == state.pointer) {
       event.preventDefault()
       const [x, y] = calcFinalPos(event.clientX, event.clientY);
@@ -95,7 +93,6 @@ export default function Window({ children, ...props }: WindowProps ) {
   
   function onPointerDown(event: PointerEvent) {
     const state = stateRef.current
-    console.log("down: " + event.pointerId)
     
     if (state.isDragging) {
       // There other pointer at same time on same window handle
