@@ -16,7 +16,7 @@ export default function AddUseForm({
   onSubmit,
   onCancel
 }: {
-  onSubmit?: (data: AddUserDetail) => void,
+  onSubmit?: (data: AddUserDetail, doneSubmitting: () => void) => void,
   onCancel?: () => void
 }) {
   const fullnameId = useId()
@@ -45,7 +45,7 @@ export default function AddUseForm({
         username: username,
         role: role,
         password: password
-      })
+      }, () => setProcessing(false))
     }
   }
   

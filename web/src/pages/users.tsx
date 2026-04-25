@@ -126,10 +126,11 @@ export default function Users() {
     setOpenedAddUserWindow(false)
   }
   
-  function submitAddUser(data: AddUserDetail) {
+  function submitAddUser(data: AddUserDetail, doneProcessing: () => void) {
     (async () => {
       if (token == null) {
         setErrorMessageForAddUser("You're not logged in, please login first")
+        doneProcessing()
         return
       }
       
@@ -150,9 +151,12 @@ export default function Users() {
           break
         }
         
+        doneProcessing()
         return
       }
       
+      doneProcessing()
+      setOpenedAddUserWindow(false)
       setRevision(revision + 1)
     })()
   }
