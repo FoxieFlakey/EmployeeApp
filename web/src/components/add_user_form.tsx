@@ -28,6 +28,8 @@ export default function AddUseForm({
   const [ processing, setProcessing ] = useState(false)
   
   function submit(event: React.SubmitEvent<HTMLFormElement>) {
+    event.preventDefault()
+    
     const data = new FormData(event.currentTarget)
     const fullName = data.get("fullName")!.toString()
     const displayName = data.get("fullName")?.toString()
