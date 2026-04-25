@@ -4,8 +4,8 @@ import { useContext, useState } from "react";
 import { API_URL, WEB_URL } from "@/app/config";
 import ProfileCard from "@/components/profile_card";
 import { UserContext } from "@/components/user_provider";
-import Window from "@/components/window";
 import AddUseForm, { AddUserDetail } from "@/components/add_user_form";
+import ModalWindow from "@/components/modal_window";
 
 export default function Home() {
   const { token, userInfo } = useContext(UserContext)
@@ -49,9 +49,9 @@ export default function Home() {
       </p>
       
       {
-        isOpen && <Window title="Add user" onClose={ cancel }>
+        isOpen && <ModalWindow title="Add user" onClose={ cancel }>
           <AddUseForm onCancel={ cancel } onSubmit={ submit } />
-        </Window>
+        </ModalWindow>
       }
     </>
   );
