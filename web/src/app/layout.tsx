@@ -8,7 +8,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>        
+      <head>
+        <title>Employee App</title>
+      </head>
+      <body>
         <Header />
         {children}
       </body>
