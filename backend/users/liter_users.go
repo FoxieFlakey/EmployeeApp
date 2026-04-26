@@ -58,7 +58,8 @@ func (self *UsersIterator) Next() *UserInfo {
 
 func IterateAllUsers() (*UsersIterator, error) {
 	rows, err := state.Database.Query(
-		"SELECT id, username, fullname, display_name, user_role, is_frozen, password_hash FROM Users",
+		"SELECT id, username, fullname, display_name, user_role, is_frozen, password_hash " +
+		"FROM Users ORDER BY id ASC",
 	)
 	
 	if err != nil {
