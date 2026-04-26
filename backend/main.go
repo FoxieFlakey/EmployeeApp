@@ -79,6 +79,7 @@ func main() {
 	frozenChecked.DELETE("/users/:id", endpoints.DeleteUser)
 	frozenChecked.GET("/users/list", endpoints.ListUsers)
 	frozenChecked.POST("/create_user", endpoints.CreateUser)
+	frozenChecked.POST("/logout", endpoints.Logout)
 	
 	router.POST("/login", endpoints.Login)
 	

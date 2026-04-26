@@ -9,6 +9,7 @@ import styles from "./side_menu.module.css"
 import { AppContext, Page } from "@/app/page"
 import { UserRole } from "@/lib/backend/lib"
 import Column from "./column_of_elements"
+import Backend from "@/lib/backend/lib"
 
 function NavBarItem({ children, page }: { children?: ReactNode, page: Page }) {
   const { currentPage, setPage } = useContext(AppContext)
@@ -38,6 +39,13 @@ export default function SideMenu() {
   }, [token])
   
   function logout() {
+    if (token != null) {
+      // Don't really care if it failed, just start the logout
+      // and don't wait, JS engine would take care of running
+      // it till completion/error
+      Backend.logout(token)
+    }
+    
     setToken(null)
     redirect("/login")
   }

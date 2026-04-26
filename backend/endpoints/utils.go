@@ -18,14 +18,24 @@ func checkRole(c *gin.Context, required users.UserRole) bool {
 	return currentUser.Role == required
 }
 
-func GetCurrentUser(c *gin.Context) (*users.UserInfo, error) {
+func GetCurrentSession(c *gin.Context) (*string, error) {
 	authHeader := c.GetHeader("Authorization")
 	
 	if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
 		return nil, errors.MissingAuthHeader
 	}
 	
-	info, err := users.GetUserInfoFromSessionToken(strings.TrimPrefix(authHeader, "Bearer "))
+	token := strings.TrimPrefix(authHeader, "Bearer ")
+	return &token, nil
+}
+
+func GetCurrentUser(c *gin.Context) (*users.UserInfo, error) {
+	token, err := GetCurrentSession(c)
+	if err != nil {
+		return nil, err
+	}
+	
+	info, err := users.GetUserInfoFromSessionToken(*token)
 	
 	if err != nil {
 		return nil, err

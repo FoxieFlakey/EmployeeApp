@@ -14,6 +14,7 @@ import { get_allowed_changes_to_user } from "./allowed_changes";
 import { modify_user } from "./modify_user";
 import { login } from "./login";
 import { me } from "./me";
+import { logout } from "./logout";
 
 export enum UserRole {
   Admin = "Admin",
@@ -41,6 +42,7 @@ export default {
   create_user,
   get_allowed_changes_to_user,
   modify_user,
+  logout,
   me
 }
 
