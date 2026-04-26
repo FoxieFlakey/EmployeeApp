@@ -9,6 +9,7 @@ import Backend from "@/lib/backend/lib";
 import { unwrap, unwrap_err as unwrapErr } from "@/lib/backend/result";
 import { ErrorCode } from "@/lib/backend/error";
 import { UserContext } from "@/components/user_provider";
+import StyledButton from "@/components/button";
 
 export default function LoginScreen() {
   const [ errorMessage, setErrorMessage ] = useState<string | null>(null)
@@ -74,7 +75,7 @@ export default function LoginScreen() {
         </tbody>
       </table>
       
-      <button type="submit" disabled={isLoggingIn}>{isLoggingIn ? "Logging in..." : "Login" }</button>
+      <StyledButton type="submit" disabled={isLoggingIn}>{isLoggingIn ? "Logging in..." : "Login" }</StyledButton>
     </form>
   </>
 }
