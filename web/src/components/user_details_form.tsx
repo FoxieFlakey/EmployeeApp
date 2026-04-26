@@ -58,7 +58,7 @@ export default function UserDetailForm({
     const fullName = data.get("fullName")?.toString()
     const displayName = data.get("displayName")?.toString()
     const username = data.get("username")?.toString()
-    const role = data.get("role")!
+    const role = data.get("role")?.toString()
     const password = data.get("password")?.toString()
     
     setProcessing(true)
