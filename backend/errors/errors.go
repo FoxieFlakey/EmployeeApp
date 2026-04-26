@@ -51,6 +51,8 @@ func MakeErrorMessage(e error) string {
 		return e.Error()
 	case IllegalFullname:
 		return e.Error()
+	case MissingPrivileges:
+		return e.Error()
 	default:
 		return "Server dont have proper error message"
 	}
