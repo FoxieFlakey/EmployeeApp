@@ -160,6 +160,7 @@ export default function Window({ children, ...props }: WindowProps ) {
       className={ styles.window }
       style={{ top: `${state.currentY}px`, left: `${state.currentX}px` }}
     >
+      <hr style={{ display: "none" }} />
       <div className={ styles.window_header } onPointerDown={ onPointerDown }>
         <table style={{ width: "100%" }}>
           <tbody>
@@ -180,9 +181,12 @@ export default function Window({ children, ...props }: WindowProps ) {
         </table>
       </div>
       
+      <hr style={{ display: "none" }} />
       <div className={ styles.window_content }>
         { children }
       </div>
+      
+      <hr style={{ display: "none" }} />
     </div>
 }
 
