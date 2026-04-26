@@ -1,5 +1,5 @@
 import { UserRole } from "@/lib/backend/lib"
-import { useId, useState } from "react"
+import { useEffect, useId, useState } from "react"
 
 import styles from "./user_details_form.module.css"
 import StyledButton from "./button"
@@ -73,6 +73,20 @@ export default function UserDetailForm({
     }
   }
   
+  const [ fullname, setFullname ] = useState<string>(initialValues?.fullname ?? "")
+  const [ displayName, setDisplayName ] = useState<string>(initialValues?.display_name ?? "")
+  const [ username, setUsername ] = useState<string>(initialValues?.username ?? "")
+  const [ role, setRole ] = useState<UserRole>(initialValues?.role ?? UserRole.Accounting)
+  const [ password, setPassword ] = useState<string>(initialValues?.password ?? "")
+  
+  useEffect(() => {
+    setFullname(initialValues?.fullname ?? "")
+    setDisplayName(initialValues?.display_name ?? "")
+    setUsername(initialValues?.username ?? "")
+    setRole(initialValues?.role ?? UserRole.Accounting)
+    setPassword(initialValues?.password ?? "")
+  }, [ initialValues ])
+  
   return <div>
     <form onSubmit={ submit }>
       <p>Fields that are marked with <span style={{ color: "red" }}>*</span> are required</p>
@@ -87,7 +101,8 @@ export default function UserDetailForm({
               type="text"
               required={ requiredFields.fullname }
               disabled={ disabledFields?.fullname || disabled }
-              defaultValue={ initialValues?.fullname }
+              value={ fullname }
+              onChange={ (e) => setFullname(e.target.value) }
             /></td>
           </tr>
           
@@ -100,7 +115,8 @@ export default function UserDetailForm({
               type="text"
               required={ requiredFields.display_name }
               disabled={ disabledFields?.display_name || disabled }
-              defaultValue={ initialValues?.display_name }
+              value={ displayName }
+              onChange={ (e) => setDisplayName(e.target.value) }
             /></td>
           </tr>
           
@@ -113,7 +129,8 @@ export default function UserDetailForm({
               type="text"
               required={ requiredFields.username }
               disabled={ disabledFields?.username || disabled }
-              defaultValue={ initialValues?.username }
+              value={ username }
+              onChange={ (e) => setUsername(e.target.value) }
             /></td>
           </tr>
           
@@ -126,7 +143,8 @@ export default function UserDetailForm({
                 name="role"
                 required={ requiredFields.role }
                 disabled={ disabledFields?.role || disabled }
-                defaultValue={ initialValues?.role }
+                value={ role }
+                onChange={ (e) => setRole(e.target.value as UserRole) }
               >
                 <option value={ UserRole.Accounting }>Accounting</option>
                 <option value={ UserRole.Admin }>Administrator</option>
@@ -146,6 +164,8 @@ export default function UserDetailForm({
               required={ requiredFields.password }
               disabled={ disabledFields?.password || disabled }
               defaultValue={ initialValues?.password }
+              value={ password }
+              onChange={ (e) => setPassword(e.target.value) }
             /></td>
           </tr>
           
