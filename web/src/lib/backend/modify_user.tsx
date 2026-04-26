@@ -20,7 +20,7 @@ export interface ModifyUserInfo {
 
 export async function modify_user(sessionToken: string, target: BigInt, changes: ModifyUserInfo): Promise<Result<void, Error>> {
   const result = await fetch(API_URL + `/users/${target}/profile`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         'Authorization': `Bearer ${sessionToken}`
       },

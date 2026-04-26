@@ -75,7 +75,7 @@ func main() {
 	frozenChecked.POST("/v1/users/:id/freeze", endpoints.FreezeUser)
 	frozenChecked.POST("/v1/users/:id/unfreeze", endpoints.UnfreezeUser)
 	frozenChecked.GET("/v1/users/:id/allowed_changes", endpoints.AllowedUserChanges)
-	frozenChecked.PUT("/v1/users/:id/profile", endpoints.ModifyUser)
+	frozenChecked.PATCH("/v1/users/:id/profile", endpoints.ModifyUser)
 	frozenChecked.DELETE("/v1/users/:id", endpoints.DeleteUser)
 	frozenChecked.GET("/v1/users/list", endpoints.ListUsers)
 	frozenChecked.POST("/v1/create_user", endpoints.CreateUser)
