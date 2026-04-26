@@ -8,38 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// POST /v1/login
-//
-// {
-//   "username": "...",
-//   "password": "..."
-// }
-//
-// Response (success):
-// 200 Ok
-//
-// {
-//   "session_token": "<token...>"
-// }
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-//
-// Or incase of wrong password
-// 401 Unauthorized
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-
 func Login(c *gin.Context) {
 	var body users.LoginInfo
 	

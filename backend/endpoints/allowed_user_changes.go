@@ -9,32 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// GET /v1/users/:id/allowed_changes
-//
-// (list of any combination of these, may as well be empty)
-// [ "username", "password", "display_name", "fullname", "role" ]
-//
-// Response (success):
-// 200 Ok
-//
-// {
-//   "username": <true/false>
-//   "password": <true/false>
-//   "display_name": <true/false>
-//   "fullname": <true/false>
-//   "role": <true/false>
-// }
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-
 func AllowedUserChanges(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {

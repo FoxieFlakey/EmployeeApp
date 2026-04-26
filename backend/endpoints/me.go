@@ -6,30 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// GET /v1/me
-//
-// Response (success):
-// 200 Ok
-//
-// {
-//   "id": "...",
-//   "username": "...",
-//   "display_name": "...",
-//   "fullname": "...",
-//   "role": "<one of 'Admin' or 'HRD' or 'Developer' or 'Accounting'>",
-//   "is_frozen": ...
-// }
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-
 func Me(c *gin.Context) {
 	current, err := GetCurrentUser(c)
 	

@@ -9,30 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// PUT /v1/users/:id/allowed_changes
-//
-// (list of any combination of these, may as well be empty)
-// {
-//   "username": <string or none>,
-//   "display_name": <string or none>,
-//   "fullname": <string or none>,
-//   "role": <string or none>,
-//   "password": <string or none>
-// }
-//
-// Response (success):
-// 204 No Content
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-
 func ModifyUser(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {

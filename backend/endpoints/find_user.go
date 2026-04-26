@@ -9,45 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// GET /v1/users/:id/profile
-//
-// Response (success):
-// 200 Ok
-//
-// {
-//   "id": "...",
-//   "username": "...",
-//   "display_name": "...",
-//   "fullname": "...",
-//   "role": "<one of 'Admin' or 'HRD' or 'Developer' or 'Accounting'>",
-//   "is_frozen": ...
-// }
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-//
-// incase of unauthenticated
-// 401 Unauthorized
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-// incase of not enough privilege
-// 403 Forbidden
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
 func FindUser(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {

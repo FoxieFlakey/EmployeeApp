@@ -1,0 +1,183 @@
+Common responses for errors (4xx http codes) and errors may occur at any of the endpoint
+{
+  "code": <code>,
+  "message": <description of error>
+}
+
+Variables assumed
+$BASE_URL => URL to the API including the version so localhost at port 81 for version 1 would be 
+  http://localhost:81/v1
+$SESSION_TOKEN => Opaque token that was returned by server from login
+
+Error codes present (listing of errors on each endpoint is not exhaustive, any of these can occur)
+"DuplicateUsername" => There already existing user
+"IllegalUsername" => The username is illegal and do not meet requirement
+"IllegalDisplayName" => The display name is illegal and do not meet requirement
+"IllegalFullname" => The full name is illegal and do not meet requirement
+"ValidationError" => The client sent malformed request
+"InsecurePassword" => Password is too short/too insecure
+"WrongPassword" => Means literally wrong password
+"ServerError" => Server met an internal error and error message would be generic error
+  as details about implementation could be leaked by accident
+"UnknownUser" => Server cannot find the user looked for
+"InvalidSessionToken" => invalid session token, either expired/non existent
+"FrozenUser" => User is frozen, no action can be done, till an admin unfreeze the account
+"MissingAuthHeader" => Client did not send Authorization header for authenticating
+"MissingPrivileges" => User don't have sufficient privileges to do certain operation
+
+1. Login endpoint
+After performing this request, server will return session token that clients can use to further
+authorize the additional requests
+
+POST $BASE/login
+
+{
+  "username": "...",
+  "password": "..."
+}
+
+200 Ok
+
+{
+  "session_token": "..."
+}
+
+Errors: WrongPassword, UnknownUser, and FrozenUser
+
+2. Finding detail about current user
+
+This produces same response as $BASE/users/$ID/profile. This endpoint
+exists merely so client can find current user's details (including id)
+the $ID would be the ID of user that is currently authenticated
+
+GET $BASE/me
+Authorization: Bearer $SESSION_TOKEN
+
+200 Ok
+
+{
+  ... /* same as what the find user endpoint returns */
+}
+
+Errors: MissingAuthHeader, InvalidSessionToken
+
+3. Find user by ID
+
+Perform a lookup to a given user about their profile/information and $ID
+would be ID the client wanted to look for
+
+GET $BASE/users/$ID/profile
+Authorization: Bearer $SESSION_TOKEN
+
+200 Ok
+
+{
+  "id": "...",
+  "username": "...",
+  "display_name": "...",
+  "fullname": "...",
+  "role": "...", /* One of "Admin", "HRD", "Developer", or "Accounting" */
+  "is_frozen": true/false
+}
+
+Errors: MissingAuthHeader, InvalidSessionToken, MissingPrivileges
+
+4. Logout
+
+Invalidates a given $SESSION_TOKEN, after success it won't be valid
+
+POST $BASE/logout
+Authorization: Bearer $SESSION_TOKEN
+
+204 No Content
+
+Errors: MissingAuthHeader, InvalidSessionToken
+
+5. Delete a user
+
+DELETE $BASE/users/$ID
+Authorization: Bearer $SESSION_TOKEN
+
+204 No Content
+
+Errors: MissingAuthHeader, InvalidSessionToken, MissingPrivileges, UnknownUser
+
+6. Get changes allowed on a user
+
+Every key in response, correspond to same key in object in modify user endpoint
+if this corresponds to true, that mean modification is allowed for the specific
+field, if its false/null then its not allowed
+
+GET $BASE/users/$ID/allowed_changes
+Authorization: Bearer $SESSION_TOKEN
+
+200 Ok
+
+{
+  "username": <true/false/null>,
+  "password": <true/false/null>,
+  "display_name": <true/false/null>,
+  "fullname": <true/false/null>,
+  "role": <true/false/null>
+}
+
+Errors: MissingAuthHeader, InvalidSessionToken, UnknownUser
+
+7. Modify an user information
+
+Null fields are ignore and won't be modified
+
+PATCH $BASE/users/$ID/profile
+Authorization: Bearer $SESSION_TOKEN
+
+{
+  "username": "..."/null,
+  "password": "..."/null
+  "display_name": "..."/null,
+  "fullname": "..."/null,
+  "role": "..." /* One of "Admin", "HRD", "Developer", "Accounting" or null */
+}
+
+204 No Content
+
+Errors: MissingAuthHeader, InvalidSessionToken, MissingPrivileges, UnknownUser
+
+8. List existing users
+
+Returns array of user IDs which later can be fetched by find user endpoint
+
+GET $BASE/users/list
+Authorization: Bearer $SESSION_TOKEN
+
+200 Ok
+
+[ ... ]
+
+Errors: MissingAuthHeader, InvalidSessionToken, MissingPrivileges
+
+9. Create a new user
+
+POST $BASE/create_user
+Authorization: Bearer $SESSION_TOKEN
+
+{
+  "username": "...",
+  "password": "...",
+  "display_name": "...",
+  "fullname": "...",
+  "role": "..." /* One of "Admin", "HRD", "Developer", "Accounting" */
+}
+
+201 Created
+
+Errors: MissingAuthHeader, InvalidSessionToken, MissingPrivileges, DuplicateUsername, InsecurePassword, IllegalDisplayName, IllegalFullname, IllegalUsername
+
+10. Freeze/unfree a user
+
+POST $BASE/users/$ID/freeze | POST $BASE/users/$ID/unfreeze
+
+204 No Content
+
+Errors: MissingAuthHeader, InvalidSessionToken, MissingPrivileges, UnknownUser
+
+

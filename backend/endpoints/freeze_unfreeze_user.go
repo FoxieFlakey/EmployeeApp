@@ -9,23 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// POST /v1/user/:id/freeze
-//
-// Response (success):
-// 200 Ok
-//
-// {}
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-
 func FreezeUser(c *gin.Context) {
 	freezeImpl(c, true)
 }

@@ -9,23 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request:
-// DELETE /v1/user/:id
-//
-// Response (success):
-// 200 Ok
-//
-// {}
-//
-// Response (failed):
-// 400 Bad Request
-//
-// {
-//   "code": "...",
-//   "message": "..."
-// }
-//
-
 func DeleteUser(c *gin.Context) {
 	if !checkRole(c, users.RoleAdmin) {
 		// only Admin can delete users
