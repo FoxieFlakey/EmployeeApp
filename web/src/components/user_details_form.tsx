@@ -23,6 +23,8 @@ export interface FieldsOptions {
 export default function UserDetailForm({
   onSubmit,
   onCancel,
+  disabled,
+  initialValues,
   disabledFields,
   requiredFields,
   submitButtonName
@@ -31,7 +33,9 @@ export default function UserDetailForm({
   onCancel?: () => void
   disabledFields?: FieldsOptions
   requiredFields: FieldsOptions
+  initialValues?: UserDetail | null,
   submitButtonName?: string
+  disabled?: boolean
 }) {
   const fullnameId = useId()
   const usernameId = useId()
@@ -40,16 +44,22 @@ export default function UserDetailForm({
   const passwordId = useId()
   
   const [ processing, setProcessing ] = useState(false)
+  const isThereAtleastOneEditable =
+    !disabledFields?.display_name ||
+    !disabledFields?.fullname ||
+    !disabledFields?.username ||
+    !disabledFields?.password ||
+    !disabledFields?.role
   
   function submit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     
     const data = new FormData(event.currentTarget)
-    const fullName = data.get("fullName")!.toString()
-    const displayName = data.get("fullName")?.toString()
-    const username = data.get("username")!.toString()
+    const fullName = data.get("fullName")?.toString()
+    const displayName = data.get("displayName")?.toString()
+    const username = data.get("username")?.toString()
     const role = data.get("role")!
-    const password = data.get("password")!.toString()
+    const password = data.get("password")?.toString()
     
     setProcessing(true)
     if (onSubmit != null) {
@@ -76,6 +86,8 @@ export default function UserDetailForm({
               name="fullName"
               type="text"
               required={ requiredFields.fullname }
+              disabled={ disabledFields?.fullname || disabled }
+              defaultValue={ initialValues?.fullname }
             /></td>
           </tr>
           
@@ -87,6 +99,8 @@ export default function UserDetailForm({
               name="displayName"
               type="text"
               required={ requiredFields.display_name }
+              disabled={ disabledFields?.display_name || disabled }
+              defaultValue={ initialValues?.display_name }
             /></td>
           </tr>
           
@@ -98,13 +112,22 @@ export default function UserDetailForm({
               name="username"
               type="text"
               required={ requiredFields.username }
+              disabled={ disabledFields?.username || disabled }
+              defaultValue={ initialValues?.username }
             /></td>
           </tr>
           
           <tr>
             <td><label htmlFor={ roleId }>Role{ requiredFields.role && <span style={{ color: "red" }}>*</span> }</label></td>
             <td>
-              <select className={ styles.inputElement } id={ roleId } name="role" required={ requiredFields.role } >
+              <select
+                className={ styles.inputElement }
+                id={ roleId }
+                name="role"
+                required={ requiredFields.role }
+                disabled={ disabledFields?.role || disabled }
+                defaultValue={ initialValues?.role }
+              >
                 <option value={ UserRole.Accounting }>Accounting</option>
                 <option value={ UserRole.Admin }>Administrator</option>
                 <option value={ UserRole.Developer }>Developer</option>
@@ -121,6 +144,8 @@ export default function UserDetailForm({
               name="password"
               type="password"
               required={ requiredFields.password }
+              disabled={ disabledFields?.password || disabled }
+              defaultValue={ initialValues?.password }
             /></td>
           </tr>
           
@@ -131,7 +156,7 @@ export default function UserDetailForm({
                   Cancel
                 </StyledButton>
                 
-                <StyledButton disabled={ processing } type="submit" style={{ flex: 1 }}>
+                <StyledButton disabled={ processing || disabled || !isThereAtleastOneEditable } type="submit" style={{ flex: 1 }}>
                   { submitButtonName ?? "Submit" }
                 </StyledButton>
               </div>

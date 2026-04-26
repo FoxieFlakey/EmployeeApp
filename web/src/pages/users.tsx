@@ -14,6 +14,9 @@ import IconButton from "@/components/icon_button"
 import ModalWindow from "@/components/modal_window"
 import AddUseForm, { AddUserDetail } from "@/components/add_user_form"
 import Row from "@/components/row_of_elements"
+import Window from "@/components/window"
+import UserDetailForm, { FieldsOptions, UserDetail } from "@/components/user_details_form"
+import ModifyUserForm from "@/components/modify_user_form"
 
 export default function Users() {
   const { token } = useContext(UserContext)
@@ -47,6 +50,8 @@ export default function Users() {
   
   // Keep the counting matching number of headers in <thead> element
   const columnsCount = 6
+  
+  const [ currentlyModifyingUser, setOpenedModifyUserWindow ] = useState<UserInfo | null>(null)
   
   let data: ReactNode[] = []
   if (users != null) {
@@ -87,6 +92,12 @@ export default function Users() {
       }
       
       if (user.ok) {
+        const userInfo = user.value
+        async function modifyUser() {
+          setErrorMessageForModifyUser(null)
+          setOpenedModifyUserWindow(userInfo)
+        }
+        
         return <tr key={ id.toString() }>
           <td>{ id.toString() }</td>
           <td>{ user.value.username }</td>
@@ -107,6 +118,10 @@ export default function Users() {
               <IconButton title="Delete this user" onClick={() => deleteUser() } >
                 <img src={ WEB_URL + "/Trash Can Icon.png" } width="16" height="16" />
               </IconButton>
+              
+              <IconButton title="Change user's detail" onClick={ () => modifyUser() }>
+                <img src={ WEB_URL + "/Pencil.png" } width="16" height="16" />
+              </IconButton>
             </div>
           </td>
         </tr>
@@ -123,6 +138,7 @@ export default function Users() {
   
   const [ openedAddUserWindow, setOpenedAddUserWindow ] = useState(false)
   const [ errorMessageForAddUser, setErrorMessageForAddUser ] = useState<string | null>(null)
+  const [ errorMessageForModifyUser, setErrorMessageForModifyUser ] = useState<string | null>(null)
   function cancelAddUser() {
     setOpenedAddUserWindow(false)
   }
@@ -161,6 +177,31 @@ export default function Users() {
       
       doneProcessing()
       setOpenedAddUserWindow(false)
+      setRevision(revision + 1)
+    })()
+  }
+  
+  function cancelModifyUser() {
+    setOpenedModifyUserWindow(null)
+  }
+  
+  function submitModifyUser(target: BigInt, data: UserDetail, doneProcessing: () => void) {
+    (async () => {
+      if (!token) {
+        setErrorMessageForModifyUser("You're not logged in, please login first")
+        doneProcessing()
+        return
+      }
+      
+      const result = await Backend.modify_user(token, target, data)
+      if (!result.ok) {
+        setErrorMessageForModifyUser(`Cannot modify user: ${result.value.message}`)
+        doneProcessing()
+        return
+      }
+      
+      doneProcessing()
+      setOpenedModifyUserWindow(null)
       setRevision(revision + 1)
     })()
   }
@@ -208,6 +249,22 @@ export default function Users() {
             <>{ error }</>
         }
       </Centered>
+    }
+    
+    {
+      currentlyModifyingUser && <Window title={ `Modifying ${currentlyModifyingUser.fullname}` } onClose={ cancelModifyUser }>
+        {
+          errorMessageForModifyUser != null && <div className={ styles.errorDiv } >
+            <p>{ errorMessageForModifyUser }</p>
+          </div>
+        }
+        
+        <ModifyUserForm
+          target={ currentlyModifyingUser.id }
+          onCancel={ cancelModifyUser }
+          onSubmit={ submitModifyUser }
+        />
+      </Window>
     }
     
     {
