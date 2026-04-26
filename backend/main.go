@@ -63,12 +63,6 @@ func main() {
 		},
 	}))
 	
-	router.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"name": "Hewwwoo!",
-		})
-	})
-	
 	frozenChecked := router.Group("", middleware.AuthCheck())
 	frozenChecked.GET("/v1/me", endpoints.Me)
 	frozenChecked.GET("/v1/users/:id/profile", endpoints.FindUser)
