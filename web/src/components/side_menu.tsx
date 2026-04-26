@@ -60,19 +60,19 @@ export default function SideMenu() {
     <Column tableStyle={{ marginBottom: "3px", width: "100%" }}>
       { homeMenu }
       { usersMenu }
+      
+      <Centered>
+        { isLoggedIn ? (
+          <StyledButton style={{ fontSize: "large" }} onClick={ () => logout() }>
+            Logout
+          </StyledButton>
+        ) : (
+          <StyledButton style={{ fontSize: "large" }} onClick={ () => redirect("/login") }>
+            Login
+          </StyledButton>
+        ) }
+      </Centered>
     </Column>
-    
-    <Centered>
-      { isLoggedIn ? (
-        <StyledButton style={{ fontSize: "large" }} onClick={ () => logout() }>
-          Logout
-        </StyledButton>
-      ) : (
-        <StyledButton style={{ fontSize: "large" }} onClick={ () => redirect("/login") }>
-          Login
-        </StyledButton>
-      ) }
-    </Centered>
   </>
 }
 
