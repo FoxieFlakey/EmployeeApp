@@ -68,7 +68,7 @@ func ModifyUser(subject *UserInfo, target *UserInfo, info ModifyUserParameters) 
 	var passwordHash string
 	
 	if info.Password != nil {
-		passwordHash = utils.HashPassword(passwordHash)
+		passwordHash = utils.HashPassword(*info.Password)
 	} else {
 		passwordHash = target.PasswordHash
 	}
