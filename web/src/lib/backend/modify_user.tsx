@@ -27,9 +27,8 @@ export async function modify_user(sessionToken: string, target: BigInt, changes:
       body: JSONBig.stringify(changes)
     })
   
-  const resultBody = JSONBig.parse(await result.text())
   if (!result.ok) {
-    return failed(validateErrorResponse(resultBody))
+    return failed(validateErrorResponse(JSONBig.parse(await result.text())))
   }
   
   return ok(undefined)
