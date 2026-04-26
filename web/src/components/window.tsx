@@ -2,6 +2,7 @@ import { PointerEvent, ReactNode, useEffect, useId, useRef, useState } from "rea
 import styles from "./window.module.css";
 import IconButton from "./icon_button";
 import { WEB_URL } from "@/app/config";
+import Row from "./row_of_elements";
 
 export interface WindowProps {
   children?: ReactNode
@@ -160,13 +161,23 @@ export default function Window({ children, ...props }: WindowProps ) {
       style={{ top: `${state.currentY}px`, left: `${state.currentX}px` }}
     >
       <div className={ styles.window_header } onPointerDown={ onPointerDown }>
-        <div style={{ flex: 1 }}>
-          { props.title ?? "Unnamed" }
-        </div>
-        
-        <IconButton onClick={ props.onClose }>
-          <img src={ WEB_URL + "/X icon.png" } width="20" height="20"></img>
-        </IconButton>
+        <table style={{ width: "100%" }}>
+          <tbody>
+            <tr>
+              <td>
+                <div style={{ flex: 1 }}>
+                  { props.title ?? "Unnamed" }
+                </div>
+              </td>
+              
+              <td style={{ width: "0px" }}>
+                <IconButton onClick={ props.onClose }>
+                  <img src={ WEB_URL + "/X icon.png" } width="20" height="20"></img>
+                </IconButton>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       
       <div className={ styles.window_content }>
