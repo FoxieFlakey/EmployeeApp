@@ -211,7 +211,7 @@ export default function Users() {
     }
     
     {
-      openedAddUserWindow && <ModalWindow onClose={ cancelAddUser }>
+      openedAddUserWindow && <ModalWindow title="Create new user" onClose={ cancelAddUser }>
         {
           errorMessageForAddUser != null && <div className={ styles.errorDiv } >
             <p>{ errorMessageForAddUser }</p>
