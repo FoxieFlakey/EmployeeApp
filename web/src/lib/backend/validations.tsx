@@ -1,5 +1,6 @@
 import { UserList } from "./list_user"
 import { UserInfo, UserRole } from "./lib"
+import { AllowedUserChanges } from "./allowed_changes"
 
 export function validateUserRole(role: unknown): UserRole | null {
   if (role == null || typeof role != "string") {
@@ -31,6 +32,25 @@ export function validateUserList(object: unknown): UserList | null {
   }
   
   return object as UserList
+}
+
+export function validateAllowedUserChanges(object: unknown): AllowedUserChanges | null {
+  if (object == null || typeof object != "object") {
+    return null
+  }
+  
+  if (
+    !("username" in object) ||
+    !("password" in object) ||
+    !("display_name" in object) ||
+    !("fullname" in object) ||
+    !("role" in object) ||
+    validateUserRole(object.role)
+  ) {
+    return null
+  }
+  
+  return object as AllowedUserChanges
 }
 
 export function validateUserInfoObject(object: unknown): UserInfo | null {

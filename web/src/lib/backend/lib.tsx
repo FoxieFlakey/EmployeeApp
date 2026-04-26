@@ -10,6 +10,8 @@ import { delete_user } from "./delete_user";
 import { create_user } from "./create_user";
 import { find_user } from "./find_user";
 import { list_users } from "./list_user";
+import { get_allowed_changes_to_user } from "./allowed_changes";
+import { modify_user } from "./modify_user";
 import { login } from "./login";
 import { me } from "./me";
 
@@ -37,6 +39,8 @@ export default {
   unfreeze_user,
   delete_user,
   create_user,
+  get_allowed_changes_to_user,
+  modify_user,
   me
 }
 
