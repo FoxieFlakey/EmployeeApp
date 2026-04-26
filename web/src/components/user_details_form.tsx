@@ -48,17 +48,17 @@ export default function UserDetailForm({
     const fullName = data.get("fullName")!.toString()
     const displayName = data.get("fullName")?.toString()
     const username = data.get("username")!.toString()
-    const role = data.get("role")! as UserRole
+    const role = data.get("role")!
     const password = data.get("password")!.toString()
     
     setProcessing(true)
     if (onSubmit != null) {
       onSubmit({
-        fullname: fullName,
-        display_name: displayName,
-        username: username,
-        role: role,
-        password: password
+        fullname: fullName == "" ? undefined : fullName,
+        display_name: displayName == "" ? undefined : displayName,
+        username: username == "" ? undefined : username,
+        role: role == "" ? undefined : role as UserRole,
+        password: password == "" ? undefined : password
       }, () => setProcessing(false))
     }
   }
