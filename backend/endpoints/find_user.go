@@ -51,34 +51,34 @@ import (
 func FindUser(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("invalid user id", err))
+		c.JSON(http.StatusBadRequest, MakeError("invalid user id", err))
 		return
 	}
 	
-	currentUser, err := getCurrentUser(c)
+	currentUser, err := GetCurrentUser(c)
 	if err == errors.MissingAuthHeader {
-		c.JSON(http.StatusUnauthorized, makeError("you're unauthenticated", err))
+		c.JSON(http.StatusUnauthorized, MakeError("you're unauthenticated", err))
 		return
 	}
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("invalid request", err))
+		c.JSON(http.StatusBadRequest, MakeError("invalid request", err))
 		return
 	}
 	
 	if currentUser.IsFrozen {
-		c.JSON(http.StatusUnauthorized, makeError("not allowed because ", errors.FrozenUser))
+		c.JSON(http.StatusUnauthorized, MakeError("not allowed because ", errors.FrozenUser))
 		return
 	}
 	
 	user, err := users.FindUserById(id)
 	if err == errors.UnknownUser {
-		c.JSON(http.StatusNotFound, makeError("cannot find user", errors.UnknownUser))
+		c.JSON(http.StatusNotFound, MakeError("cannot find user", errors.UnknownUser))
 		return
 	}
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("cannot find user", err))
+		c.JSON(http.StatusBadRequest, MakeError("cannot find user", err))
 		return
 	}
 	

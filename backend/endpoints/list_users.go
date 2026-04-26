@@ -51,13 +51,13 @@ import (
 func ListUsers(c *gin.Context) {
 	if !checkRole(c, users.RoleHRD) && !checkRole(c, users.RoleAdmin) {
 		// only Admin and HRD can list users
-		c.JSON(http.StatusUnauthorized, makeError("only Admin or HRD, allowed to list new users", errors.MissingPrivileges))
+		c.JSON(http.StatusUnauthorized, MakeError("only Admin or HRD, allowed to list new users", errors.MissingPrivileges))
 		return
 	}
 	
 	iter, err := users.IterateAllUsers()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("server error", err))
+		c.JSON(http.StatusBadRequest, MakeError("server error", err))
 		return
 	}
 	

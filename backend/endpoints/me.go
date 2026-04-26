@@ -31,10 +31,10 @@ import (
 //
 
 func Me(c *gin.Context) {
-	current, err := getCurrentUser(c)
+	current, err := GetCurrentUser(c)
 	
 	if current == nil {
-		c.JSON(http.StatusBadRequest, makeError("Cannot retrieve current user", err))
+		c.JSON(http.StatusBadRequest, MakeError("Cannot retrieve current user", err))
 		return
 	}
 	

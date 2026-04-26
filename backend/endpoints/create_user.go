@@ -35,7 +35,7 @@ import (
 func CreateUser(c *gin.Context) {
 	if !checkRole(c, users.RoleHRD) && !checkRole(c, users.RoleAdmin) {
 		// only Admin and HRD can create users
-		c.JSON(http.StatusUnauthorized, makeError("only Admin or HRD, allowed to make new users", errors.MissingPrivileges))
+		c.JSON(http.StatusUnauthorized, MakeError("only Admin or HRD, allowed to make new users", errors.MissingPrivileges))
 		return
 	}
 	
@@ -44,14 +44,14 @@ func CreateUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&body)
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("invalid request", err))
+		c.JSON(http.StatusBadRequest, MakeError("invalid request", err))
 		return
 	}
 	
 	err = users.CreateUser(&body)
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("Error creating user", err))
+		c.JSON(http.StatusBadRequest, MakeError("Error creating user", err))
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H {})

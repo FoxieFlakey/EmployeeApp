@@ -46,7 +46,7 @@ func Login(c *gin.Context) {
 	err := c.ShouldBindJSON(&body)
 	
 	if err != nil {
-		c.JSON(http.StatusBadRequest, makeError("invalid request", err))
+		c.JSON(http.StatusBadRequest, MakeError("invalid request", err))
 		return
 	}
 	
@@ -58,7 +58,7 @@ func Login(c *gin.Context) {
 			status = http.StatusUnauthorized
 		}
 		
-		c.JSON(status, makeError("error logging in", err))
+		c.JSON(status, MakeError("error logging in", err))
 		return
 	}
 	

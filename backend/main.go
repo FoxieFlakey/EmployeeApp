@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend/endpoints"
+	"backend/middleware"
 	"backend/state"
 	"backend/users"
 	"crypto/rand"
@@ -68,13 +69,15 @@ func main() {
 		})
 	})
 	
-	router.GET("/me", endpoints.Me)
-	router.GET("/users/:id/profile", endpoints.FindUser)
-	router.POST("/users/:id/freeze", endpoints.FreezeUser)
-	router.POST("/users/:id/unfreeze", endpoints.UnfreezeUser)
-	router.DELETE("/users/:id", endpoints.DeleteUser)
-	router.GET("/users/list", endpoints.ListUsers)
-	router.POST("/create_user", endpoints.CreateUser)
+	frozenChecked := router.Group("", middleware.AuthCheck())
+	frozenChecked.GET("/me", endpoints.Me)
+	frozenChecked.GET("/users/:id/profile", endpoints.FindUser)
+	frozenChecked.POST("/users/:id/freeze", endpoints.FreezeUser)
+	frozenChecked.POST("/users/:id/unfreeze", endpoints.UnfreezeUser)
+	frozenChecked.DELETE("/users/:id", endpoints.DeleteUser)
+	frozenChecked.GET("/users/list", endpoints.ListUsers)
+	frozenChecked.POST("/create_user", endpoints.CreateUser)
+	
 	router.POST("/login", endpoints.Login)
 	
 	router.Run()
