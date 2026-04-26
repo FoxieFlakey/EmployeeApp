@@ -13,6 +13,7 @@ import { WEB_URL } from "@/app/config"
 import IconButton from "@/components/icon_button"
 import ModalWindow from "@/components/modal_window"
 import AddUseForm, { AddUserDetail } from "@/components/add_user_form"
+import Row from "@/components/row_of_elements"
 
 export default function Users() {
   const { token } = useContext(UserContext)
@@ -166,27 +167,20 @@ export default function Users() {
   
   return <>
     <h1>List of registered users</h1>
-    <table>
-      <tbody>
-        <tr>
-          <td>
-            <StyledButton onClick={ () => {
-              setErrorMessageForAddUser(null)
-              setOpenedAddUserWindow(true)
-            } }>
-              <img src={ WEB_URL + "/Plus Icon.png" } width="16" height="16" />
-              Create User
-            </StyledButton>
-          </td>
-          <td>
-            <StyledButton onClick={ () => setRevision(revision + 1) }>
-              <img src={ WEB_URL + "/Refresh Icon.png" } width="16" height="16" />
-              Refresh List
-            </StyledButton>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <Row>
+      <StyledButton onClick={ () => {
+        setErrorMessageForAddUser(null)
+        setOpenedAddUserWindow(true)
+      } }>
+        <img src={ WEB_URL + "/Plus Icon.png" } width="16" height="16" />
+        Create User
+      </StyledButton>
+      
+      <StyledButton onClick={ () => setRevision(revision + 1) }>
+        <img src={ WEB_URL + "/Refresh Icon.png" } width="16" height="16" />
+        Refresh List
+      </StyledButton>
+    </Row>
     
     <table key={ revision } className={ styles.users_table }>
       <thead>

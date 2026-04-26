@@ -8,6 +8,7 @@ import { UserContext } from "./user_provider"
 import styles from "./side_menu.module.css"
 import { AppContext, Page } from "@/app/page"
 import { UserRole } from "@/lib/backend/lib"
+import Column from "./column_of_elements"
 
 function NavBarItem({ children, page }: { children?: ReactNode, page: Page }) {
   const { currentPage, setPage } = useContext(AppContext)
@@ -56,10 +57,10 @@ export default function SideMenu() {
   }
   
   return <>
-    <div style={{ marginBottom: "3px" }}>
+    <Column tableStyle={{ marginBottom: "3px", width: "100%" }}>
       { homeMenu }
       { usersMenu }
-    </div>
+    </Column>
     
     <Centered>
       { isLoggedIn ? (
