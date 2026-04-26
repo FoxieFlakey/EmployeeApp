@@ -59,7 +59,7 @@ export default function LoginScreen() {
       <p>{ errorMessage }</p>
     </div>
     
-    <form onSubmit={ doSubmit }>
+    <form onSubmit={ doSubmit } style={{ margin: "4px" }}>
       <table>
         <tbody>
           <tr>
