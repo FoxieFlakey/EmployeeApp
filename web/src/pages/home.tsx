@@ -1,11 +1,9 @@
 'use client';
 
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { API_URL, WEB_URL } from "@/app/config";
 import ProfileCard from "@/components/profile_card";
 import { UserContext } from "@/components/user_provider";
-import AddUseForm, { AddUserDetail } from "@/components/add_user_form";
-import ModalWindow from "@/components/modal_window";
 
 export default function Home() {
   const { token, userInfo } = useContext(UserContext)
