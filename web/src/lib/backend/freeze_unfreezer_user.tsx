@@ -28,10 +28,8 @@ async function freezeUserImpl(session_token: string, id: BigInt, freeze: boolean
     }
   })
   
-  const resultBody = JSONBig.parse(await result.text())
-  
   if (!result.ok) {
-    return failed(validateErrorResponse(resultBody))
+    return failed(validateErrorResponse(JSONBig.parse(await result.text())))
   }
   
   return ok(undefined)

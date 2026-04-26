@@ -27,10 +27,8 @@ export async function create_user(sessionToken: string, info: CreateUserInfo): P
     body: JSONBig.stringify(info)
   })
   
-  const resultBody = JSONBig.parse(await result.text())
-  
   if (!result.ok) {
-    return failed(validateErrorResponse(resultBody))
+    return failed(validateErrorResponse(JSONBig.parse(await result.text())))
   }
   
   return ok(undefined)

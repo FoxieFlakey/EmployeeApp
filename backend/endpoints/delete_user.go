@@ -56,6 +56,6 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 	
-	c.JSON(http.StatusOK, gin.H {})
+	c.Status(http.StatusNoContent)
 }
 

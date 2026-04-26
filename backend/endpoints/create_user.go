@@ -22,8 +22,6 @@ import (
 // Response (success):
 // 201 Created
 //
-// {}
-//
 // Response (failed):
 // 400 Bad Request
 //
@@ -54,6 +52,6 @@ func CreateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, MakeError("Error creating user", err))
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H {})
+	c.Status(http.StatusCreated)
 }
 

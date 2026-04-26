@@ -77,7 +77,7 @@ func freezeImpl(c *gin.Context, freeze bool) {
 		}
 	}
 	
-	c.JSON(http.StatusOK, gin.H {})
+	c.Status(http.StatusNoContent)
 }
 
 

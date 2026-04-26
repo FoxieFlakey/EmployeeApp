@@ -17,10 +17,8 @@ export async function delete_user(session_token: string, id: BigInt): Promise<Re
     }
   })
   
-  const resultBody = JSONBig.parse(await result.text())
-  
   if (!result.ok) {
-    return failed(validateErrorResponse(resultBody))
+    return failed(validateErrorResponse(JSONBig.parse(await result.text())))
   }
   
   return ok(undefined)
