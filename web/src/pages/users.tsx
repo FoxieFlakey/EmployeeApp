@@ -166,13 +166,27 @@ export default function Users() {
   
   return <>
     <h1>List of registered users</h1>
-    <StyledButton onClick={ () => {
-      setErrorMessageForAddUser(null)
-      setOpenedAddUserWindow(true)
-    } }>
-      <img src={ WEB_URL + "/Plus Icon.png" } width="16" height="16" />
-      Create User
-    </StyledButton>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <StyledButton onClick={ () => {
+              setErrorMessageForAddUser(null)
+              setOpenedAddUserWindow(true)
+            } }>
+              <img src={ WEB_URL + "/Plus Icon.png" } width="16" height="16" />
+              Create User
+            </StyledButton>
+          </td>
+          <td>
+            <StyledButton onClick={ () => setRevision(revision + 1) }>
+              <img src={ WEB_URL + "/Refresh Icon.png" } width="16" height="16" />
+              Refresh List
+            </StyledButton>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     
     <table key={ revision } className={ styles.users_table }>
       <thead>
