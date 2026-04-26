@@ -6,6 +6,7 @@ import UserProvider from "@/components/user_provider"
 
 import Home from "@/pages/home"
 import Users from "@/pages/users"
+import { redirect } from "next/navigation"
 import { createContext, useState } from "react";
 
 interface AppContext {
@@ -37,7 +38,7 @@ export default function App() {
   }
   
   return <AppContext.Provider value={{ currentPage, setPage: setCurrentPage }}>
-    <UserProvider>
+    <UserProvider onFrozenUser={ () => redirect("/frozen") }>
       <table className={ styles.dividerTable }><tbody><tr>
         <td className={ styles.sideMenu }>
           <SideMenu />

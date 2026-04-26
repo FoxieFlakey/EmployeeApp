@@ -5,7 +5,7 @@ import { UserInfo } from "@/lib/backend/lib";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import Backend from "@/lib/backend/lib"
 import { Result } from "@/lib/backend/result";
-import { Error } from "@/lib/backend/error";
+import { Error, ErrorCode } from "@/lib/backend/error";
 
 interface TokenValue {
   token: string | null,
@@ -19,7 +19,7 @@ export const UserContext = createContext<TokenValue>({
   setToken(_) {}
 })
 
-export default function UserProvider({ children }: { children: ReactNode }) {
+export default function UserProvider({ children, onFrozenUser }: { children: ReactNode, onFrozenUser?: () => void }) {
   const [ token, setTokenInner ] = useState<string | null>(null)
   const [ userInfo, setUserInfo ] = useState<Result<UserInfo, Error> | null>(null)
   
@@ -31,7 +31,14 @@ export default function UserProvider({ children }: { children: ReactNode }) {
       
       // Try fetch new user asynchronously
       (async () => {
-        setUserInfo(await Backend.me(newToken))
+        const response = await Backend.me(newToken)
+        if (!response.ok && response.value.code == ErrorCode.FrozenUser) {
+          if (onFrozenUser != null) {
+            onFrozenUser()
+          }
+        }
+        
+        setUserInfo(response)
       })()
     } else {
       removeSessionToken()
