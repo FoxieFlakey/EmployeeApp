@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS Users (
   username VARCHAR(30) UNIQUE NOT NULL,
   fullname VARCHAR(100) NOT NULL,
   display_name VARCHAR(100),
-  picture BYTEA,
   user_role VARCHAR(20)
     CHECK (user_role IN ('Admin', 'HRD', 'Developer', 'Accounting'))
     NOT NULL,
