@@ -64,8 +64,21 @@ func MakeErrorCode(e error) string {
 		return ValidationError.Error()
 	}
 	
-	if (e == ServerError) {
-		return ServerError.Error()
+	switch e {
+	case DuplicateUsername:
+	case IllegalUsername:
+	case InsecurePassword:
+	case WrongPassword:
+	case ServerError:
+	case UnknownUser:
+	case InvalidSessionToken:
+	case FrozenUser:
+	case ValidationError:
+	case IllegalFullname:
+	case IllegalFullname:
+	case MissingPrivileges:
+	default:
+		e = ServerError
 	}
 	
 	// Currently the error code and message are the same
