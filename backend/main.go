@@ -47,7 +47,10 @@ func main() {
 	}
 	
 	fmt.Println("Connected to database")
-	tryMakeFirstUser()
+	if tryMakeFirstUser() == false {
+		fmt.Printf("Error making first user, aborting")
+		return
+	}
 	fmt.Println("Initialized!")
 	
 	router := gin.Default()
