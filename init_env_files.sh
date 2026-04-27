@@ -14,3 +14,5 @@ cp config/database.env.example config/database.env
 cp config/web.env.example config/web.env
 cp .env.example .env
 
+echo "Files are modified"
+
