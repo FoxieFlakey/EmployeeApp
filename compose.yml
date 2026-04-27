@@ -1,6 +1,12 @@
 services:
   web:
-    build: web
+    build:
+      context: web
+      args:
+        - WEB_HOSTNAME=$NEXT_PUBLIC_WEB_HOSTNAME
+        - WEB_PORT=$NEXT_PUBLIC_WEB_PORT
+        - API_HOSTNAME=$NEXT_PUBLIC_API_HOSTNAME
+        - API_PORT=$NEXT_PUBLIC_API_PORT
     ports:
       - "${NEXT_PUBLIC_WEB_PORT}:${NEXT_PUBLIC_WEB_PORT}"
     environment:
