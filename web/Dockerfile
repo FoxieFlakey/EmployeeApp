@@ -32,5 +32,5 @@ RUN npm run build
 # host it!
 EXPOSE 3000
 
-CMD sh -c 'if [ "$DEV_MODE" == "1" ]; then su - server -c npm run dev; else su server -c "cd /app; npm run start"; fi'
+CMD sh -c 'if [ "$DEV_MODE" == "1" ]; then npm run dev; else su server -c "cd /app; npm run start"; fi'
 
