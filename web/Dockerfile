@@ -31,10 +31,10 @@ ENV DEV_MODE=$DEV_MODE
 
 # Build the website
 RUN echo "Building with DEV_MODE=${DEV_MODE}"
-RUN npm run build
+RUN if [ "$DEV_MODE" != "1" ]; then npm run build; fi
 
 # host it!
 EXPOSE 3000
 
-CMD sh -c 'if [ "$DEV_MODE" == "1" ]; then npm run dev; else su server -c "cd /app; npm run start"; fi'
+CMD if [ "$DEV_MODE" == "1" ]; then npm run dev; else su server -c "cd /app; npm run start"; fi
 
